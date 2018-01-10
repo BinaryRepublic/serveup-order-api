@@ -1,0 +1,31 @@
+<html>
+    <head>
+        <script type="text/javascript">
+            function sendRequest () {
+                let input = document.getElementById("input").value;
+                addOrder(input);
+                /*
+                let http = new XMLHttpRequest();
+                http.onreadystatechange = function() {
+                    if (this.readyState === 4 && this.status === 200) {
+                        addOrder(this.responseText);
+                    }
+                };
+                http.open("POST", "localhost:3000/order", true);
+                http.send(); */
+            }
+            function addOrder (order) {
+                let addElement = document.getElementById("add-element");
+                let newResponse = '<p>' + order + '</p>';
+                addElement.innerHTML = newResponse + addElement.innerHTML;
+            }
+        </script>
+    </head>
+    <body>
+        <form action="javascript:sendRequest()">
+            <input id="input" type="text" placeholder="Gib hier deine Bestellung ein." />
+            <button type="submit">Senden</button>
+        </form>
+        <div id="add-element"></div>
+    </body>
+</html>
