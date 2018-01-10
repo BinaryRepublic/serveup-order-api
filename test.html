@@ -1,23 +1,13 @@
 <html>
     <head>
+        <script type="text/javascript" src="jquery.js"></script>
         <script type="text/javascript">
             function sendRequest () {
-                let input = document.getElementById("input").value;
-
-                var http = new XMLHttpRequest();
-                var url = "localhost:3000/order";
-                var params = "order=" + input;
-                http.open("POST", url, true);
-
-                //Send the proper header information along with the request
-                http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-
-                http.onreadystatechange = function () {//Call a function when the state changes.
-                    if(http.readyState === 4 && http.status === 200) {
-                        addOrder(http.responseText);
-                    }
-                };
-                http.send(params);
+                var input = document.getElementById("input").value;
+                $.post( "http://localhost:3000/order", { order: input })
+                .done(function( data ) {
+                    addOrder(data);
+                });
             }
             function addOrder (order) {
                 let addElement = document.getElementById("add-element");
@@ -25,6 +15,7 @@
                 addElement.innerHTML = newResponse + addElement.innerHTML;
             }
         </script>
+        <meta charset="utf-8" />
     </head>
     <body>
         <form action="javascript:sendRequest()">
