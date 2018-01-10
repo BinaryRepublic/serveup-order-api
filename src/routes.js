@@ -1,5 +1,5 @@
 const Router = require('express').Router();
 
-Router.get('/test', require("./controller/main").test);
+Router.post('/order', require("./controller/order").sendOrder);
 
 module.exports = Router;
