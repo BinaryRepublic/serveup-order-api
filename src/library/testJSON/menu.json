@@ -1,0 +1,157 @@
+{
+  "drinks": [
+    {
+      "name": "bier",
+      "synonym": [
+        "halbe"
+      ],
+      "default": "jever",
+      "child": [
+        {
+          "name": "börsenbier",
+          "synonym": [
+            "börse"
+          ],
+          "var": [
+            {
+              "size": 300,
+              "price": 2.6
+            },
+            {
+              "size": 500,
+              "price": 3.9
+            }
+          ]
+        },
+        {
+          "name": "jever",
+          "default": "pilsener",
+          "child": [
+            {
+              "name": "pilsener",
+              "var": [
+                {
+                  "size": 300,
+                  "price": 2.9
+                },
+                {
+                  "size": 500,
+                  "price": 4.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "paulaner",
+          "default": "premium",
+          "child": [
+            {
+              "name": "premium",
+              "default": "pilsener",
+              "child": [
+                {
+                  "name": "pilsener",
+                  "var": [
+                    {
+                      "size": 300,
+                      "price": 3
+                    },
+                    {
+                      "size": 500,
+                      "price": 4.5
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "hacker",
+          "default": "pschorr",
+          "child": [
+            {
+              "name": "pschorr",
+              "var": [
+                {
+                  "size": 300,
+                  "price": 2.9
+                },
+                {
+                  "size": 500,
+                  "price": 4.4
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "berliner",
+          "default": "pilsener",
+          "child": [
+            {
+              "name": "pilsener",
+              "var": [
+                {
+                  "size": 300,
+                  "price": 2.9
+                },
+                {
+                  "size": 500,
+                  "price": 4.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "veltins",
+          "var": [
+            {
+              "size": 300,
+              "price": 2.8
+            },
+            {
+              "size": 500,
+              "price": 4.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "kakao",
+      "synonym": [
+        "milch mit schokolade"
+      ],
+      "default": "heiß",
+      "unselect": [
+        {
+          "name": "sahne",
+          "price": -0.1
+        }
+      ],
+      "child": [
+        {
+          "name": "heiß",
+          "synonym": "standard"
+        }
+      ]
+    }
+  ],
+  "size": {
+    "bigMin": 400,
+    "smallMax": 350
+  },
+  "defaultParent": [
+    {
+      "name": "pilsener",
+      "parent": "jever"
+    },
+    {
+      "name": "heiß",
+      "parent": false
+    }
+  ]
+}

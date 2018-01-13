@@ -6,12 +6,37 @@
                 var input = document.getElementById("input").value;
                 $.post( "http://localhost:3000/order", { order: input })
                 .done(function( data ) {
-                    addOrder(data);
+                    addOrder(JSON.parse(data));
                 });
             }
             function addOrder (order) {
+                let outputStr = $("#input").val();
+                $("#input").val('');
+                let newResponse = '<p style="color: grey">' + outputStr + '</p>';
+
+                for (let key in order) {
+                    let color;
+                    switch (key) {
+                        case 'name':
+                            color = 'blue';
+                            break;
+                        case 'nb':
+                            color = 'red';
+                            break;
+                        case 'size':
+                            color = 'green';
+                            break;
+                        case 'conj':
+                            color = 'black';
+                            break;
+                    }
+                    for (let x = 0; x < order[key].length; x++) {
+                        let orderElem = order[key][x];
+                        newResponse = newResponse.toLowerCase().replace(orderElem.inputVal, '<span style="font-weight: bold; color: ' + color + '">' + orderElem.inputVal + '</span>');
+                    }
+                }
+
                 let addElement = document.getElementById("add-element");
-                let newResponse = '<p>' + order + '</p>';
                 addElement.innerHTML = newResponse + addElement.innerHTML;
             }
         </script>
