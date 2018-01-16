@@ -1,0 +1,20 @@
+{
+	"name": "ro-order-api",
+	"version": "1.0.0",
+	"description": "order API for voice assistans to order drinks",
+	"main": "index.js",
+	"scripts": {
+		"start": "node index.js",
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/restaurantorder/ro-order-api.git"
+	},
+	"author": "Tobias Trinks",
+	"license": "ISC",
+	"dependencies": {
+		"express": "^4.16.2"
+	},
+	"devDependencies": {}
+}

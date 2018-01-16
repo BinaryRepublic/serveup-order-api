@@ -1,0 +1,19 @@
+language: node_js
+node_js:
+  - "stable"
+sudo: required
+services:
+  - docker
+script:
+  - npm run test
+  - export REPO=restaurantorder/ro-order-api
+  - export COMMIT=latest 
+  - docker build -f Dockerfile -t $REPO:$COMMIT .
+  - docker run -d $REPO:$COMMIT
+  - docker ps -a
+# after_success:
+#   - docker login -u $DOCKER_USER -p $DOCKER_PASS
+#   - export TAG=master
+#   - docker tag $REPO:$COMMIT $REPO:$TAG
+#   - docker tag $REPO:$COMMIT $REPO:travis-$TRAVIS_BUILD_NUMBER
+#   - docker push $REPO
