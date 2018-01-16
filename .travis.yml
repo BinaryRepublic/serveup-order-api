@@ -21,11 +21,11 @@ after_success:
   - gcloud version
   - gcloud --quiet components update
   # Auth flow
-  - echo $GCLOUD_KEY | base64 --decode > gcloud.p12
-  - gcloud auth activate-service-account $GCLOUD_EMAIL --key-file gcloud.p12
+  - echo $GCLOUD_KEY | base64 --decode > gcloud.json
+  - gcloud auth activate-service-account $GCLOUD_EMAIL --key-file gcloud.json
   - ssh-keygen -f ~/.ssh/google_compute_engine -N ""
   # Push to Google container registry
-  - gcloud docker push eu.gcr.io/$CLOUDSDK_CORE_PROJECT/$REPO:$COMMIT > /dev/null
+  - gcloud docker push eu.gcr.io/$CLOUDSDK_CORE_PROJECT/ro-order-api:latest > /dev/null
 
 # after_success:
 #   - docker login -u $DOCKER_USER -p $DOCKER_PASS
