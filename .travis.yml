@@ -25,7 +25,7 @@ after_success:
   - gcloud auth activate-service-account $GCLOUD_EMAIL --key-file gcloud.json
   - ssh-keygen -f ~/.ssh/google_compute_engine -N ""
   # Push to Google container registry
-  - gcloud docker push eu.gcr.io/$CLOUDSDK_CORE_PROJECT/ro-order-api:latest > /dev/null
+  - gcloud docker push eu.gcr.io/$CLOUDSDK_CORE_PROJECT/ro-order-api:latest
 
 # after_success:
 #   - docker login -u $DOCKER_USER -p $DOCKER_PASS
