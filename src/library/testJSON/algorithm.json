@@ -1,0 +1,89 @@
+{
+  "numbers": {
+    "connWords": ["mal"],
+    "content": [
+      {
+        "val": 1,
+        "synonym": ["eins", "ein", "einmal"]
+      },
+      {
+        "val": 2,
+        "synonym": ["zwei", "zweimal"]
+      },
+      {
+        "val": 3,
+        "synonym": ["drei", "dreimal"]
+      },
+      {
+        "val": 4,
+        "synonym": ["vier", "viermal"]
+      },
+      {
+        "val": 5,
+        "synonym": ["fünf", "fünfmal"]
+      },
+      {
+        "val": 6,
+        "synonym": ["sechs", "sechsmal"]
+      }
+    ]
+  },
+  "size": {
+    "small": [
+      "klein",
+      "wenig",
+      "schuss"
+    ],
+    "big": [
+      "riesig",
+      "groß",
+      "mächtig",
+      "viel"
+    ],
+    "var": [
+      {
+        "val": 500,
+        "synonym": [
+          "halber liter",
+          "halben liter",
+          "halbe liter"
+        ]
+      },
+      {
+        "val": 1500,
+        "synonym": [
+          "anderthalb liter"
+        ]
+      }
+    ]
+  },
+  "conjunction": {
+    "add": [
+      "und",
+      "plus",
+      "außerdem",
+      "weiterhin",
+      "dann"
+    ],
+    "editAdd": [
+      "mit"
+    ],
+    "editDiff": [
+      "ohne"
+    ]
+  },
+  "defaultSynonyms": [
+    {
+      "name": "heiß",
+      "synonym": ["warm"]
+    },
+    {
+      "name": "kalt",
+      "synonym": ["kalt"]
+    },
+    {
+      "name": "pilsener",
+      "synonym": ["pils"]
+    }
+  ]
+}
