@@ -9,12 +9,10 @@ cache:
     - "$HOME/google-cloud-sdk/"
 script:
   - npm run test
-  - export REPO=restaurantorder/ro-order-api
-  - export COMMIT=latest 
-  - docker build -f Dockerfile -t $REPO:$COMMIT .
-  - docker run -d $REPO:$COMMIT
+  - docker build -f Dockerfile -t gcr.io/$CLOUDSDK_CORE_PROJECT/ro-order-api:latest .
+  - docker run -d gcr.io/$CLOUDSDK_CORE_PROJECT/ro-order-api:latest
   - docker ps -a
-after_success:
+# after_success:
   - if [ ! -d "$HOME/google-cloud-sdk/bin" ]; then rm -rf $HOME/google-cloud-sdk; curl https://sdk.cloud.google.com | bash; fi
   # Add gcloud to $PATH
   - source /home/travis/google-cloud-sdk/path.bash.inc
@@ -26,10 +24,3 @@ after_success:
   - ssh-keygen -f ~/.ssh/google_compute_engine -N ""
   # Push to Google container registry
   - gcloud docker -- push gcr.io/$CLOUDSDK_CORE_PROJECT/ro-order-api:latest
-
-# after_success:
-#   - docker login -u $DOCKER_USER -p $DOCKER_PASS
-#   - export TAG=master
-#   - docker tag $REPO:$COMMIT $REPO:$TAG
-#   - docker tag $REPO:$COMMIT $REPO:travis-$TRAVIS_BUILD_NUMBER
-#   - docker push $REPO
