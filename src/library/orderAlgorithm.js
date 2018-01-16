@@ -4,7 +4,7 @@ function search (srcStr, searchStr) {
 
     let pos = -1;
     let searchSuffix = [
-        "", "e", "es", "er", "en"
+        "", "e", "es", "er", "en", "n"
     ];
     do {
         for (let x = 0; x < searchSuffix.length; x++) {
@@ -20,7 +20,6 @@ function search (srcStr, searchStr) {
         }
         lastIndex = pos + 1;
     } while (pos !== -1);
-
     return result;
 }
 
@@ -64,7 +63,7 @@ function searchName (input, drinks, defaultSynonyms, index = [], result = []) {
     }
 
     for (let x = 0; x < drinks.length; x++) {
-        let newIndex = index.slice();
+        let newIndex = index.slice(); // copy by value
         // recursive for getting all childrens
         newIndex.push(x);
         if (drinks[x].child) {
@@ -73,6 +72,11 @@ function searchName (input, drinks, defaultSynonyms, index = [], result = []) {
         // search for name
         let drinkName = drinks[x].name;
         result = searchForResult(drinkName, newIndex, false, result);
+        if (drinks[x].synonym) {
+            for (let y = 0; y < drinks[x].synonym.length; y++) {
+                result = searchForResult(drinks[x].synonym[y], newIndex, false, result);
+            }
+        }
         // search for defaultSynonym <> menu matches
         for (let y = 0; y < defaultSynonymsResults.length; y++) {
             let synonym = defaultSynonymsResults[y];
@@ -185,8 +189,11 @@ function createBlocksByNameObj (nameObj) {
     // create nameObj blocks > with same inputPos
     let blocks = [];
     let newBlocks = [];
-    let inputPos = 0;
+    let inputPos = -1;
     for (let x = 0; x < nameObj.length; x++) {
+        if (inputPos === -1) {
+            inputPos = nameObj[x].inputPos;
+        }
         if (inputPos !== nameObj[x].inputPos) {
             inputPos = nameObj[x].inputPos;
             blocks.push(newBlocks);
@@ -194,58 +201,216 @@ function createBlocksByNameObj (nameObj) {
         }
         newBlocks.push(nameObj[x]);
     }
-    blocks.push(newBlocks);
+    if (newBlocks.length) {
+        blocks.push(newBlocks);
+    }
     return blocks;
 }
-
-function getProductByMatchingBlocks (blocks, drinks) {
-
-}
-function getDefaultByBlock (nameObj, drinks, defaultParent) {
-    /*
+function splitNameBlocks (nameBlocks) {
     let result = [];
-
     for (let x = 0; x < nameBlocks.length; x++) {
-        // find correct product in block
-        let correctIndex = false;
-        // get default parents first
-        // then get default child
-
-        // go up
-        let parentName = false;
-        let indexLevel = 1;
-        do {
-            for (let y = 0; y < defaultParent.length; y++) {
-                if (defaultParent[y].name === nameBlocks[x][0].name) {
-                    parentName = defaultParent[y].name;
-                }
-            }
-            for (let y = 0; y < nameBlocks[x].length; y++) {
-                let parentObj = drinks[y];
-
-                if (nameBlocks[x][y].menuPos.length > indexLevel) {
-                    let menuPos = nameBlocks[x][y].menuPos;
-                    for (let z = 1; z < menuPos.length - indexLevel; z++) {
-                        parentObj = parentObj.child[menuPos[z]];
-                    }
-                    if (parentObj.name === parentName) {
-                        console.log('Object: ' + parentName);
-                    }
-                }
-            }
-
-        } while (parentName);
+        for (let y = 0; y < nameBlocks[x].length; y++) {
+            result.push(nameBlocks[x][y]);
+        }
     }
     return result;
-    */
 }
 
+function compareNames (nameBlocks, menu) {
+    // nameBlocks is an array of different product elements which
+    // have to be compared > find similarities
+
+    // split nameBlocks
+    let nameKeywords = splitNameBlocks(nameBlocks);
+    // build similarity array
+    let similarities = [];
+    for (let x = 0; x < nameKeywords.length; x++) {
+        similarities[x] = [nameKeywords[x]];
+        for (let y = x+1; y < nameKeywords.length; y++) {
+            // compare by menuPos
+            let matching = true;
+            for (let z = 0; z < nameKeywords[x].menuPos.length; z++) {
+                if (nameKeywords[y].menuPos[z] !== undefined && nameKeywords[x].menuPos[z] !== nameKeywords[y].menuPos[z]) {
+                    // no matching
+                    matching = false;
+                }
+            }
+            if (matching) {
+                similarities[x].push(nameKeywords[y]);
+            }
+        }
+    }
+    // compare similarity arrays (find biggest)
+    let max = 0;
+    let maxIndex = false;
+    let maxCounter = 0;
+
+    for (let x = 0; x < similarities.length; x++) {
+        let simLength = similarities[x].length;
+        if (max === simLength) {
+            maxCounter++;
+        }
+        if (max < simLength) {
+            max = simLength;
+            maxIndex = x;
+            maxCounter = 1;
+        }
+    }
+    // check if there is only ONE longest chain
+    if (maxCounter === 1) {
+        let resultSim = similarities[maxIndex]; // HIER WEITERMACHEN !!!
+        // find longest menuPos
+        let maxMenuPosLength = 0;
+        let maxMenuPos = [];
+        for (let x = 0; x < resultSim.length; x++) {
+            let menuPosLength = resultSim[x].menuPos.length;
+            if (menuPosLength > maxMenuPosLength) {
+                maxMenuPosLength = menuPosLength;
+                maxIndex = x;
+                maxMenuPos = resultSim[x].menuPos;
+            }
+        }
+        // get product from menu
+        let product = menu[maxMenuPos[0]];
+        for (let x = 1; x < maxMenuPos.length; x++) {
+            product = product.child[maxMenuPos[x]];
+        }
+        // find lowest child
+        while (product.child) {
+            if (product.default) {
+                for (let x = 0; x < product.child.length; x++) {
+                    if (product.child[x].name === product.default) {
+                        product = product.child[x];
+                        maxMenuPos.push(x);
+                        break;
+                    }
+                }
+            } else {
+                // choose first child as default
+                product = product.child[0];
+                maxMenuPos.push(0);
+            }
+        }
+        // add menuPos to find element later
+        product.menuPos = maxMenuPos;
+        // product is final match
+        return product;
+    } else {
+        // not understandable
+        return false;
+    }
+}
+function getDefaultByBlock (nameBlock, menu, defaultParent) {
+    function getParent (name) {
+        for (let x = 0; x < defaultParent.length; x++) {
+            if (defaultParent[x].name === name) {
+                return defaultParent[x].parent;
+            }
+        }
+        return false;
+    }
+
+    // layer from nameBlockObj
+    let layer = 0;
+
+    // get parent name
+    let parentName = getParent(nameBlock[0].name);
+
+    do {
+        // search for parent in left nameBlockObj
+        layer++;
+        for (let x = 0; x < nameBlock.length; x++) {
+            // get next parent
+            let menuPos = nameBlock[x].menuPos;
+            let parentObj = menu[menuPos[0]];
+            for (let y = 1; y < menuPos.length - layer; y++) {
+                parentObj = parentObj.child[menuPos[y]];
+            }
+            // check if parent matches defaultParent > remove nameBlock if false
+            if (parentObj.name !== parentName && nameBlock.length > 1) {
+                nameBlock.splice(x, 1);
+                x--;
+            }
+        }
+        // search for next parent
+        parentName = getParent(parentName);
+    } while (parentName && nameBlock.length > 1);
+
+    // default from blocks created
+    let defaultObj = nameBlock[0];
+
+    // get product by menuPos
+    let menuPos = defaultObj.menuPos;
+    let result = menu[menuPos[0]];
+    for (let x = 1; x < menuPos.length; x++) {
+        result = result.child[menuPos[x]];
+    }
+
+    // find default childs
+    while (result.default || result.child) {
+        if (result.default) {
+            for (let x = 0; x < result.child.length; x++) {
+                if (result.child[x].name === result.default) {
+                    result = result.child[x];
+                    menuPos.push(x);
+                    break;
+                }
+            }
+        } else {
+            result = result.child[0];
+            menuPos.push(0);
+        }
+    }
+    // add menuPos to find full name later
+    result.menuPos = menuPos;
+
+    return result;
+}
+
+function createOrderByBlock (orderBlocks, menu) {
+    let order = [];
+
+    for (let x = 0; x < orderBlocks.length; x++) {
+        let nb = orderBlocks[x].nb;
+        let size = orderBlocks[x].size;
+        let product = orderBlocks[x].product;
+
+        let newOrder = {};
+
+        if (product) {
+            // generate product name
+            let menuPos = product.menuPos;
+            let menuObj = menu[menuPos[0]];
+            newOrder.name = menuObj.name;
+            for (let y = 1; y < menuPos.length; y++){
+                menuObj = menuObj.child[menuPos[y]];
+                newOrder.name += ' ' + menuObj.name;
+            }
+            // number
+            if (nb) {
+                newOrder.nb = nb.val;
+            } else {
+                // default 1
+                newOrder.nb = 1;
+            }
+            // size
+            if (size) {
+                newOrder.size = size.val;
+                // WEITERMACHEN > STANDARD GRÖSSEN
+            } else {
+                // search for default
+            }
+            order.push(newOrder);
+        } else {
+            // ask response question
+        }
+    }
+    return order;
+}
 
 exports.main = function (menu, input) {
     let drinksMenu = require('./testJSON/menu');
     let cfg = require('./testJSON/algorithm');
-
-    let order = [];
 
     input = input.replace(/[&\/\\#,+()$~%.'":*?<>{}!]/g,'');
     input = input.toLowerCase();
@@ -264,11 +429,31 @@ exports.main = function (menu, input) {
     keywords.conj = searchConj(input, cfg.conjunction);
 
     // create name blocks
-    // let nameBlocks = createBlocksByNameObj(keywords.name);
-    // console.log(nameBlocks);
+    let nameBlocks = createBlocksByNameObj(keywords.name);
 
-    // product matching
-    // let products = matchNameWithProduct(keywords.name, drinksMenu.drinks, drinksMenu.defaultParent);
-    // console.log(products);
+    // split products by rules > create orderBlocks
+    let orderBlocks = [];
+    // test
+    orderBlocks[0] = {
+        nb: keywords.nb[0],
+        size: keywords.size[0]
+    };
+
+    // --- single nameBlock per orderBlock
+    // get default product by nameBlock
+    if (nameBlocks.length === 1) {
+        orderBlocks[0].product = getDefaultByBlock(nameBlocks[0], drinksMenu.drinks, drinksMenu.defaultParent);
+    }
+    // --- multiple nameBlocks per orderBlock
+    // match multiple nameBlocks
+    if (nameBlocks.length > 1) {
+        orderBlocks[0].product = compareNames(nameBlocks, drinksMenu.drinks);
+    }
+
+    // create final order by orderBlock
+    // or create response
+    let order = createOrderByBlock(orderBlocks, drinksMenu.drinks);
+    console.log(order);
+
     return JSON.stringify(keywords);
 };

@@ -12,8 +12,8 @@
             function addOrder (order) {
                 let outputStr = $("#input").val();
                 $("#input").val('');
-                let newResponse = '<p style="color: grey">' + outputStr + '</p>';
-
+                let newResponse = outputStr;
+                let words = newResponse.split(" ");
                 for (let key in order) {
                     let color;
                     switch (key) {
@@ -30,11 +30,19 @@
                             color = 'black';
                             break;
                     }
+
                     for (let x = 0; x < order[key].length; x++) {
                         let orderElem = order[key][x];
-                        newResponse = newResponse.toLowerCase().replace(orderElem.inputVal, '<span style="font-weight: bold; color: ' + color + '">' + orderElem.inputVal + '</span>');
+                        for (let y = 0; y < words.length; y++) {
+                            if (words[y].toLowerCase() === orderElem.inputVal) {
+                                words[y] = '<span style="font-weight: bold; color: ' + color + '">' + orderElem.inputVal + '</span>';
+                            }
+                        }
                     }
                 }
+
+                newResponse = words.join(" ");
+                newResponse = '<p style="color: grey">' + newResponse + '</p>';
 
                 let addElement = document.getElementById("add-element");
                 addElement.innerHTML = newResponse + addElement.innerHTML;

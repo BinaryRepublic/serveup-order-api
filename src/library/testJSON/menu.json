@@ -52,6 +52,7 @@
               "child": [
                 {
                   "name": "pilsener",
+                  "productName": "Paulaner Premium Pils",
                   "var": [
                     {
                       "size": 300,
@@ -135,7 +136,17 @@
       "child": [
         {
           "name": "heiß",
-          "synonym": "standard"
+          "alone": false,
+          "value": [
+            {
+              "size": 300,
+              "price": 2.8
+            },
+            {
+              "size": 500,
+              "price": 4.1
+            }
+          ]
         }
       ]
     }
@@ -148,10 +159,6 @@
     {
       "name": "pilsener",
       "parent": "jever"
-    },
-    {
-      "name": "heiß",
-      "parent": false
     }
   ]
 }
