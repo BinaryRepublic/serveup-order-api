@@ -4,6 +4,9 @@ node_js:
 sudo: required
 services:
   - docker
+cache:
+  directories:
+    - "$HOME/google-cloud-sdk/"
 script:
   - npm run test
   - export REPO=restaurantorder/ro-order-api
@@ -11,6 +14,19 @@ script:
   - docker build -f Dockerfile -t $REPO:$COMMIT .
   - docker run -d $REPO:$COMMIT
   - docker ps -a
+after_success:
+  - if [ ! -d "$HOME/google-cloud-sdk/bin" ]; then rm -rf $HOME/google-cloud-sdk; curl https://sdk.cloud.google.com | bash; fi
+  # Add gcloud to $PATH
+  - source /home/travis/google-cloud-sdk/path.bash.inc
+  - gcloud version
+  - gcloud --quiet components update
+  # Auth flow
+  - echo $GCLOUD_KEY | base64 --decode > gcloud.p12
+  - gcloud auth activate-service-account $GCLOUD_EMAIL --key-file gcloud.p12
+  - ssh-keygen -f ~/.ssh/google_compute_engine -N ""
+  # Push to Google container registry
+  - gcloud docker push eu.gcr.io/$CLOUDSDK_CORE_PROJECT/$REPO:$COMMIT
+
 # after_success:
 #   - docker login -u $DOCKER_USER -p $DOCKER_PASS
 #   - export TAG=master
