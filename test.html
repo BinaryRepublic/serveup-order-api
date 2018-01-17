@@ -4,7 +4,7 @@
         <script type="text/javascript">
             function sendRequest () {
                 var input = document.getElementById("input").value;
-                $.post( "http://localhost:3000/order", { order: input })
+                $.post( "http://localhost:3000/testorder", { order: input })
                 .done(function( data ) {
                     addOrder(JSON.parse(data));
                 });
