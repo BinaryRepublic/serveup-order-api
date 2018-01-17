@@ -687,7 +687,8 @@
               "var": [
                 {
                   "size": 250,
-                  "price": 2.6
+                  "price": 2.6,
+                  "default": true
                 },
                 {
                   "size": 750,
@@ -798,8 +799,9 @@
     }
   ],
   "size": {
-    "bigMin": 400,
-    "smallMax": 350
+    "small": [20, 400],
+    "middle": [200, 499],
+    "big": [500, 600]
   },
   "defaultParent": [
     {

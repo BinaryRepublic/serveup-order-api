@@ -367,7 +367,24 @@ function getDefaultByBlock (nameBlock, menu, defaultParent) {
     return result;
 }
 
-function createOrderByBlock (orderBlocks, menu) {
+function orderVariations (variations) {
+    for (let x = 0; x < variations.length; x++) {
+        let min = -1;
+        let minIndex = 0;
+        for (let y = x; y < variations.length; y++) {
+            if (variations[y].size < min || min === -1) {
+                minIndex = y;
+                min = variations[y].size;
+            }
+        }
+        let cache = variations[x];
+        variations[x] = variations[minIndex];
+        variations[minIndex] = cache;
+    }
+    return variations;
+}
+
+function createOrderByBlock (orderBlocks, menu, menuSizeCfg) {
     let order = [];
 
     for (let x = 0; x < orderBlocks.length; x++) {
@@ -382,7 +399,7 @@ function createOrderByBlock (orderBlocks, menu) {
             let menuPos = product.menuPos;
             let menuObj = menu[menuPos[0]];
             newOrder.name = menuObj.name;
-            for (let y = 1; y < menuPos.length; y++){
+            for (let y = 1; y < menuPos.length; y++) {
                 menuObj = menuObj.child[menuPos[y]];
                 newOrder.name += ' ' + menuObj.name;
             }
@@ -395,14 +412,33 @@ function createOrderByBlock (orderBlocks, menu) {
             }
             // size
             if (size) {
-                newOrder.size = size.val;
-                // WEITERMACHEN > STANDARD GRÖSSEN
+                let variations = orderVariations(menuObj.var);
+                newOrder.size = false;
+                for (let y = 0; y < variations.length; y++) {
+                    let limit = menuSizeCfg[size.val];
+                    if (limit[0] <= variations[y].size && limit[1] >= variations[y].size) {
+                        newOrder.size = variations[y].size;
+                        break;
+                    }
+                }
+                if (!newOrder.size) {
+                    // QUESTION size not available
+                }
             } else {
                 // search for default
+                menuObj.var.filter((x) => {
+                    return x.default;
+                }, menuObj.var);
+                if (menuObj.var.length) {
+                    newOrder.size = menuObj.var[0].size;
+                } else {
+                    // QUESTION no default size defined
+                }
             }
             order.push(newOrder);
         } else {
-            // ask response question
+            // WEITERMACHEN
+            // QUESTION product not defined > should be impossible because of splitting
         }
     }
     return order;
@@ -452,7 +488,7 @@ exports.main = function (menu, input) {
 
     // create final order by orderBlock
     // or create response
-    let order = createOrderByBlock(orderBlocks, drinksMenu.drinks);
+    let order = createOrderByBlock(orderBlocks, drinksMenu.drinks, drinksMenu.size);
     console.log(order);
 
     return JSON.stringify(keywords);
