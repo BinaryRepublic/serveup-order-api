@@ -1,3 +1,5 @@
+const Helper = require('./helper');
+
 function search (srcStr, searchStr) {
     let result = [];
     let lastIndex = 0;
@@ -185,7 +187,11 @@ function searchConj (input, conjObj) {
     return result;
 }
 
-function createBlocksByNameObj (nameObj) {
+function createBlocksByNameObj (orderBlock) {
+    // filter names from orderBlock
+    let nameObj = orderBlock.filter((x) => {
+        return x.name;
+    }, orderBlock);
     // create nameObj blocks > with same inputPos
     let blocks = [];
     let newBlocks = [];
@@ -206,6 +212,49 @@ function createBlocksByNameObj (nameObj) {
     }
     return blocks;
 }
+
+
+function splitOrdersByKeywords (keywords) {
+    // merge all keywords
+    let merged = [];
+    for (let key in keywords) {
+        for (let x = 0; x < keywords[key].length; x++) {
+            // check if inputPos already exist > remove duplicates
+            let duplicate = false;
+            for (let y = 0; y < merged.push; y++) {
+                if (keywords[key][x].inputPos === merged[y].inputPos) {
+                    duplicate = true;
+                    break;
+                }
+            }
+            if (!duplicate) {
+                merged.push(keywords[key][x]);
+            }
+        }
+    }
+    // order keywords
+    keywords = Helper.orderObjArray(merged, "inputPos");
+
+    // split by conj-add > TEST-ONLY > ÜBERARBEITEN
+    let orderArr = [];
+    let orderElem = [];
+    while (keywords.length) {
+        if (keywords[0].conj) {
+            if (keywords[0].type === 'add') {
+                orderArr.push(orderElem);
+                orderElem = [];
+            }
+        } else {
+            orderElem.push(keywords[0]);
+        }
+        keywords.splice(0, 1);
+    }
+    if (orderElem.length) {
+        orderArr.push(orderElem);
+    }
+    return orderArr;
+}
+
 function splitNameBlocks (nameBlocks) {
     let result = [];
     for (let x = 0; x < nameBlocks.length; x++) {
@@ -215,7 +264,6 @@ function splitNameBlocks (nameBlocks) {
     }
     return result;
 }
-
 function compareNames (nameBlocks, menu) {
     // nameBlocks is an array of different product elements which
     // have to be compared > find similarities
@@ -367,23 +415,6 @@ function getDefaultByBlock (nameBlock, menu, defaultParent) {
     return result;
 }
 
-function orderVariations (variations) {
-    for (let x = 0; x < variations.length; x++) {
-        let min = -1;
-        let minIndex = 0;
-        for (let y = x; y < variations.length; y++) {
-            if (variations[y].size < min || min === -1) {
-                minIndex = y;
-                min = variations[y].size;
-            }
-        }
-        let cache = variations[x];
-        variations[x] = variations[minIndex];
-        variations[minIndex] = cache;
-    }
-    return variations;
-}
-
 function createOrderByBlock (orderBlocks, menu, menuSizeCfg) {
     let order = [];
 
@@ -398,11 +429,10 @@ function createOrderByBlock (orderBlocks, menu, menuSizeCfg) {
             // generate product name
             let menuPos = product.menuPos;
             let menuObj = menu[menuPos[0]];
-            newOrder.name = menuObj.name;
             for (let y = 1; y < menuPos.length; y++) {
                 menuObj = menuObj.child[menuPos[y]];
-                newOrder.name += ' ' + menuObj.name;
             }
+            newOrder.name = menuObj.productName;
             // number
             if (nb) {
                 newOrder.nb = nb.val;
@@ -412,7 +442,7 @@ function createOrderByBlock (orderBlocks, menu, menuSizeCfg) {
             }
             // size
             if (size) {
-                let variations = orderVariations(menuObj.var);
+                let variations = Helper.orderObjArray(menuObj.var, "size");
                 newOrder.size = false;
                 for (let y = 0; y < variations.length; y++) {
                     let limit = menuSizeCfg[size.val];
@@ -444,8 +474,7 @@ function createOrderByBlock (orderBlocks, menu, menuSizeCfg) {
     return order;
 }
 
-exports.main = function (menu, input) {
-    let drinksMenu = require('./testJSON/menu');
+exports.main = function (menu, input, test = false) {
     let cfg = require('./testJSON/algorithm');
 
     input = input.replace(/[&\/\\#,+()$~%.'":*?<>{}!]/g,'');
@@ -459,37 +488,44 @@ exports.main = function (menu, input) {
         size: [],
         conj: []
     };
-    keywords.name = searchName(input, drinksMenu.drinks, cfg.defaultSynonyms);
+    keywords.name = searchName(input, menu.drinks, cfg.defaultSynonyms);
     keywords.nb = searchNb(input, cfg.numbers.content);
     keywords.size = searchSize(input, cfg.size);
     keywords.conj = searchConj(input, cfg.conjunction);
 
-    // create name blocks
-    let nameBlocks = createBlocksByNameObj(keywords.name);
+    // split products
+    let orderBlocks = splitOrdersByKeywords(keywords);
 
-    // split products by rules > create orderBlocks
-    let orderBlocks = [];
-    // test
-    orderBlocks[0] = {
-        nb: keywords.nb[0],
-        size: keywords.size[0]
-    };
-
-    // --- single nameBlock per orderBlock
-    // get default product by nameBlock
-    if (nameBlocks.length === 1) {
-        orderBlocks[0].product = getDefaultByBlock(nameBlocks[0], drinksMenu.drinks, drinksMenu.defaultParent);
-    }
-    // --- multiple nameBlocks per orderBlock
-    // match multiple nameBlocks
-    if (nameBlocks.length > 1) {
-        orderBlocks[0].product = compareNames(nameBlocks, drinksMenu.drinks);
+    for (let x = 0; x < orderBlocks.length; x++) {
+        // create name blocks
+        let nameBlocks = createBlocksByNameObj(orderBlocks[x]);
+        // --- single nameBlock per orderBlock
+        // get default product by nameBlock
+        if (nameBlocks.length === 1) {
+            orderBlocks[x].product = getDefaultByBlock(nameBlocks[0], menu.drinks, menu.defaultParent);
+        }
+        // --- multiple nameBlocks per orderBlock
+        // match multiple nameBlocks
+        if (nameBlocks.length > 1) {
+            orderBlocks[x].product = compareNames(nameBlocks, menu.drinks);
+            if (!orderBlocks[x].product) {
+                // ÜBERARBEITEN
+                console.log('could not understand you!');
+            }
+        }
     }
 
     // create final order by orderBlock
     // or create response
-    let order = createOrderByBlock(orderBlocks, drinksMenu.drinks, drinksMenu.size);
-    console.log(order);
+    let order = createOrderByBlock(orderBlocks, menu.drinks, menu.size);
 
-    return JSON.stringify(keywords);
+    let response;
+    if (test) {
+        response = keywords;
+        console.log(order);
+    } else {
+        response = order;
+    }
+
+    return response;
 };
