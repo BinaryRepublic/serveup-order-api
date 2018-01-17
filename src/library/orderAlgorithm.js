@@ -455,5 +455,5 @@ exports.main = function (menu, input) {
     let order = createOrderByBlock(orderBlocks, drinksMenu.drinks);
     console.log(order);
 
-    return JSON.stringify(keywords);
+    return keywords;
 };
