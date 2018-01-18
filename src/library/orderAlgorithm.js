@@ -474,7 +474,7 @@ function createOrderByBlock (orderBlocks, menu, menuSizeCfg) {
     return order;
 }
 
-exports.main = function (menu, input, test = false) {
+exports.main = function (menu, input, orderRoute) {
     let cfg = require('./testJSON/algorithm');
 
     input = input.replace(/[&\/\\#,+()$~%.'":*?<>{}!]/g,'');
@@ -520,10 +520,17 @@ exports.main = function (menu, input, test = false) {
     let order = createOrderByBlock(orderBlocks, menu.drinks, menu.size);
 
     let response;
-    if (test) {
+    if (orderRoute === "/testorder") {
+        // API Route for internal WebApp (test.html)
         response = keywords;
-        console.log(order);
-    } else {
+    } else if(orderRoute === "/apporder") {
+        // API Route for testing orders from voice assistants
+        response = order;
+    }
+    else {
+        // API Route for final use (defined at SwaggerHub)
+        // not implemented:
+        // https://app.swaggerhub.com/apis/restaurant-order/orderAPI/1.0.0#/testorder/
         response = order;
     }
 
