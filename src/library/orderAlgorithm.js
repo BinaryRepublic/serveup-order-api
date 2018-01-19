@@ -1,4 +1,6 @@
 const Helper = require('./helper');
+const RealmController = require('../realm/RealmController.js');
+const OrderController = require('../realm/OrderController.js');
 
 function search (srcStr, searchStr) {
     let result = [];
@@ -518,6 +520,11 @@ exports.main = function (menu, input, orderRoute) {
     // create final order by orderBlock
     // or create response
     let order = createOrderByBlock(orderBlocks, menu.drinks, menu.size);
+    let realmController = new RealmController(function() {
+        let orderController = new OrderController(realmController);
+        let orderObj = {}
+        orderController.addOrder(orderObj);
+    });
 
     let response;
     if (orderRoute === "/testorder") {

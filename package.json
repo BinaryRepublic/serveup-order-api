@@ -14,7 +14,9 @@
 	"author": "Tobias Trinks",
 	"license": "ISC",
 	"dependencies": {
-		"express": "^4.16.2"
+		"express": "^4.16.2",
+		"realm": "^2.2.4",
+		"uuid": "^3.2.1"
 	},
 	"devDependencies": {}
 }
