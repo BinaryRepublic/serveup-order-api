@@ -214,7 +214,7 @@ function createBlocksByNameObj (orderBlock) {
 }
 
 
-function splitOrdersByKeywords (keywords) {
+function splitOrdersByKeywords (keywords, splitRules, menu) {
     // merge all keywords
     let merged = [];
     for (let key in keywords) {
@@ -235,13 +235,13 @@ function splitOrdersByKeywords (keywords) {
     // order keywords
     keywords = Helper.orderObjArray(merged, "inputPos");
 
-    // split by conj-add > TEST-ONLY > ÜBERARBEITEN
-    let orderArr = [];
+    // BASIC SPLIT > split by conj-add
+    let basicSplit = [];
     let orderElem = [];
     while (keywords.length) {
         if (keywords[0].conj) {
             if (keywords[0].type === 'add') {
-                orderArr.push(orderElem);
+                basicSplit.push(orderElem);
                 orderElem = [];
             }
         } else {
@@ -250,9 +250,156 @@ function splitOrdersByKeywords (keywords) {
         keywords.splice(0, 1);
     }
     if (orderElem.length) {
-        orderArr.push(orderElem);
+        basicSplit.push(orderElem);
     }
-    return orderArr;
+
+    // NORMALIZATION AND CHECK KOMBO
+    let finalSplit = [];
+    for (let x = 0; x < basicSplit.length; x++) {
+        let normalized = [];
+        // check name kombo > normalize multiple names with same chain to one name
+        let kombo = [];
+        let lastName = false;
+        for (let y = 0; y < basicSplit[x].length; y++) {
+            // basic split element
+            let basicSplitElem = basicSplit[x][y];
+
+            // get type
+            let type = false;
+            if (basicSplitElem.name) {
+                type = 'name';
+            } else if (basicSplitElem.size) {
+                type = 'size';
+            } else if (basicSplitElem.nb) {
+                type = 'nb';
+            }
+
+            // add new element to normalization
+            if (normalized[normalized.length-1] !== type || type !== 'name') {
+                normalized.push(type);
+            }
+
+            if (lastName && type === 'name') {
+                kombo[kombo.length-1].push(basicSplitElem);
+            } else {
+                if (type === 'name') {
+                    kombo.push([basicSplitElem]);
+                    lastName = true;
+                } else if (lastName) {
+                    if (kombo.length === 1) {
+                        kombo = kombo.splice(kombo.length-1, 1);
+                    }
+                    lastName = false;
+                }
+            }
+        }
+        if (kombo[kombo.length-1].length === 1) {
+            kombo.splice(kombo.length-1, 1);
+        }
+
+        // compare nameKombo
+        if (kombo.length) {
+            let komboResult = compareNames(kombo, menu);
+            if (!komboResult) {
+                // ÜBERARBEITEN > RESPONSE
+                console.log('could not understand you');
+            }
+        }
+
+        // split orders
+
+        // let splitOpportunities = matchSplitRules(normalized);
+        let allMatches = [];
+        function splitNormalized (normalized, preMatch = []) {
+            let matches = [];
+            for (let x = 0; x < splitRules.length; x++) {
+                let rule = splitRules[x].rule.split('-');
+                let match = true;
+                if (rule.length <= normalized.length) {
+                    for (let y = 0; y < rule.length; y++) {
+                        if (rule[y] !== normalized[y]) {
+                            match = false;
+                        }
+                    }
+                } else {
+                    match = false;
+                }
+                if (match) {
+                    matches.push(x);
+                }
+            }
+            if (matches.length) {
+                for (let x = 0; x < matches.length; x++) {
+                    let newNormalized = normalized.slice();
+                    let newPreMatch = preMatch.slice();
+                    newNormalized.splice(0, splitRules[matches[x]].rule.split('-').length);
+                    newPreMatch.push(matches[x]);
+                    splitNormalized(newNormalized, newPreMatch);
+                }
+            } else {
+                if (!normalized.length) {
+                    allMatches.push(preMatch);
+                }
+            }
+        }
+        splitNormalized(normalized);
+
+        if (!allMatches.length) {
+            // couldn't understand
+            // try to remove nb kombos
+            let lastItem = false;
+            let prevBasicSplit = basicSplit[x].slice();
+            for (let y = 0; y < basicSplit[x].length; y++) {
+                let basicSplitItem = basicSplit[x][y];
+                if (lastItem && basicSplitItem.nb && basicSplitItem.val === 1) {
+                    basicSplit[x].splice(y, 1);
+                    y--;
+                }
+                lastItem = (basicSplitItem.nb);
+            }
+            if (prevBasicSplit.length !== basicSplit[x].length) {
+                x--;
+            }
+        } else {
+            let max = -1;
+            let maxIndex = false;
+            for (let y = 0; y < allMatches.length; y++) {
+                let prob = false;
+                for (let z = 0; z < allMatches[y].length; z++) {
+                    let newProb = splitRules[allMatches[y][z]].prob;
+                    if (prob === false) {
+                        prob = newProb;
+                    } else {
+                        prob = ((z * prob) + newProb) / (z + 1);
+                    }
+                }
+                if (prob > max) {
+                    max = prob;
+                    maxIndex = y;
+                }
+            }
+
+            // final split
+            if (maxIndex !== false) {
+                for (let y = 0; y < allMatches[maxIndex].length; y++) {
+                    let splitRuleIndex = allMatches[maxIndex][y];
+                    let splitRuleLength = splitRules[splitRuleIndex].rule.split('-').length;
+                    let newSplitItem = [];
+                    let spliceLength = splitRuleLength;
+                    for (let z = 0; z < spliceLength; z++) {
+                        if ((z + 1) < splitRuleLength && basicSplit[x][z].name && basicSplit[x][z + 1].name) {
+                            spliceLength++;
+                        }
+                        newSplitItem.push(basicSplit[x][z]);
+                    }
+                    basicSplit[x].splice(0, spliceLength);
+                    finalSplit.push(newSplitItem);
+                }
+            }
+        }
+    }
+    // let result = orderArr;
+    return finalSplit;
 }
 
 function splitNameBlocks (nameBlocks) {
@@ -306,7 +453,7 @@ function compareNames (nameBlocks, menu) {
     }
     // check if there is only ONE longest chain
     if (maxCounter === 1) {
-        let resultSim = similarities[maxIndex]; // HIER WEITERMACHEN !!!
+        let resultSim = similarities[maxIndex];
         // find longest menuPos
         let maxMenuPosLength = 0;
         let maxMenuPos = [];
@@ -415,12 +562,17 @@ function getDefaultByBlock (nameBlock, menu, defaultParent) {
     return result;
 }
 
-function createOrderByBlock (orderBlocks, menu, menuSizeCfg) {
+function createOrderByBlock (orderBlocks, menu) {
     let order = [];
-
     for (let x = 0; x < orderBlocks.length; x++) {
-        let nb = orderBlocks[x].nb;
-        let size = orderBlocks[x].size;
+        function getTypeVal (type) {
+            let worker = orderBlocks.slice();
+            return worker[x].filter((x) => {
+                return x[type]
+            }, worker[x])[0];
+        }
+        let nb = getTypeVal('nb');
+        let size = getTypeVal('size');
         let product = orderBlocks[x].product;
 
         let newOrder = {};
@@ -444,12 +596,12 @@ function createOrderByBlock (orderBlocks, menu, menuSizeCfg) {
             if (size) {
                 let variations = Helper.orderObjArray(menuObj.var, "size");
                 newOrder.size = false;
-                for (let y = 0; y < variations.length; y++) {
-                    let limit = menuSizeCfg[size.val];
-                    if (limit[0] <= variations[y].size && limit[1] >= variations[y].size) {
-                        newOrder.size = variations[y].size;
-                        break;
-                    }
+                if (size.val === 'big') {
+                    newOrder.size = variations[variations.length-1].size;
+                } else if (size.val === 'small') {
+                    newOrder.size = variations[0].size;
+                } else if (!isNaN(size.val)) {
+                    newOrder.size = size.val;
                 }
                 if (!newOrder.size) {
                     // QUESTION size not available
@@ -494,7 +646,7 @@ exports.main = function (menu, input, test = false) {
     keywords.conj = searchConj(input, cfg.conjunction);
 
     // split products
-    let orderBlocks = splitOrdersByKeywords(keywords);
+    let orderBlocks = splitOrdersByKeywords(keywords, cfg.splitRules, menu.drinks);
 
     for (let x = 0; x < orderBlocks.length; x++) {
         // create name blocks
@@ -517,12 +669,12 @@ exports.main = function (menu, input, test = false) {
 
     // create final order by orderBlock
     // or create response
-    let order = createOrderByBlock(orderBlocks, menu.drinks, menu.size);
+    let order = createOrderByBlock(orderBlocks, menu.drinks);
 
     let response;
     if (test) {
         response = keywords;
-        console.log(order);
+        console.log('order: ' + order);
     } else {
         response = order;
     }

@@ -68,7 +68,8 @@
       "plus",
       "außerdem",
       "weiterhin",
-      "dann"
+      "dann",
+      "noch"
     ],
     "editAdd": [
       "mit"
@@ -77,6 +78,48 @@
       "ohne"
     ]
   },
+  "splitRules": [
+    {
+      "rule": "nb-size-name",
+      "prob": 10
+    },
+    {
+      "rule": "nb-name",
+      "prob": 9
+    },
+    {
+      "rule": "nb-name-size",
+      "prob": 8
+    },
+    {
+      "rule": "name-size",
+      "prob": 7
+    },
+    {
+      "rule": "name-nb",
+      "prob": 6
+    },
+    {
+      "rule": "name-nb-size",
+      "prob": 5
+    },
+    {
+      "rule": "name-size-nb",
+      "prob": 4
+    },
+    {
+      "rule": "size-name",
+      "prob": 3
+    },
+    {
+      "rule": "size-name-nb",
+      "prob": 2
+    },
+    {
+      "rule": "size-nb-name",
+      "prob": 1
+    }
+  ],
   "defaultSynonyms": [
     {
       "name": "heiß",
