@@ -9,6 +9,7 @@
       "child": [
         {
           "name": "börsenbier",
+          "productName": "Börsenbier",
           "synonym": [
             "börse"
           ],
@@ -148,10 +149,10 @@
         },
         {
           "name": "potsdamer",
-          "childs": [
+          "child": [
             {
               "name": "rex",
-              "childs": [
+              "child": [
                 {
                   "name": "pils",
                   "productName": "Potsdamer Rex Pils",
@@ -173,7 +174,7 @@
         {
           "name": "kölsch",
           "default": "sion",
-          "childs": [
+          "child": [
             {
               "name": "sion",
               "productName": "Sion Kölsch",
@@ -185,18 +186,20 @@
               ]
             },
             {
-              "name": "ein meter",
+              "name": "meter",
               "productName": "1 Meter Kölsch",
-              "var": {
-                "size": 3300,
-                "price": 27
-              }
+              "var": [
+                {
+                  "size": 3300,
+                  "price": 27
+                }
+              ]
             }
           ]
         },
         {
           "name": "gespritztes",
-          "childs": [
+          "child": [
             {
               "name": "fassbrause",
               "productName": "Gespritztes mit Fassbrause",
@@ -215,7 +218,7 @@
         },
         {
           "name": "corona",
-          "childs": [
+          "child": [
             {
               "name": "beer",
               "productName": "Corona Beer",
@@ -230,10 +233,10 @@
         },
         {
           "name": "berliner",
-          "childs": [
+          "child": [
             {
               "name": "weisse",
-              "childs": [
+              "child": [
                 {
                   "name": "rot",
                   "productName": "Berliner Weisse Rot",
@@ -502,6 +505,7 @@
               "child": [
                 {
                   "name": "red",
+                  "synonym": ["rot"],
                   "productName": "Johnnie Walker - Red Label",
                   "alone": false,
                   "var": [
@@ -513,6 +517,7 @@
                 },
                 {
                   "name": "black",
+                  "synonym": ["schwarz"],
                   "productName": "Johnnie Walker - Black Label",
                   "alone": false,
                   "var": [
@@ -698,7 +703,7 @@
             {
               "name": "still",
               "productName": "Vöslauer 'ohne'",
-              "val": [
+              "var": [
                 {
                   "size": 250,
                   "price": 2.6
@@ -718,7 +723,38 @@
       "child": [
         {
           "name": "orange",
+          "synonym": ["orangensaft", "o saft"],
           "productName": "Orangensaft",
+          "var": [
+            {
+              "size": 200,
+              "price": 2.9
+            },
+            {
+              "size": 400,
+              "price": 4.6
+            }
+          ]
+        },
+        {
+          "name": "apfel",
+          "synonym": ["apfelsaft"],
+          "productName": "Apfelsaft",
+          "var": [
+            {
+              "size": 200,
+              "price": 2.9
+            },
+            {
+              "size": 400,
+              "price": 4.6
+            }
+          ]
+        },
+        {
+          "name": "kirsch",
+          "synonym": ["kirschsaft"],
+          "productName": "Kirschsaft",
           "var": [
             {
               "size": 200,
@@ -738,6 +774,7 @@
       "child": [
         {
           "name": "creme",
+          "productName": "Kaffee Creme",
           "var": [
             {
               "size": 200,
@@ -747,6 +784,7 @@
         },
         {
           "name": "milchkaffee",
+          "productName": "Milchkaffee",
           "var": [
             {
               "size": 200,
@@ -761,6 +799,7 @@
       "child": [
         {
           "name": "heiß",
+          "productName": "Heiße Schokolade",
           "alone": false,
           "var": [
             {
@@ -775,6 +814,7 @@
       "name": "espresso",
       "child": [
         {
+          "productName": "Einfacher Espresso",
           "name": "normal",
           "alone": false,
           "var": [
@@ -786,6 +826,7 @@
         },
         {
           "name": "doppelt",
+          "productName": "Doppelter Espresso",
           "alone": false,
           "var": [
             {

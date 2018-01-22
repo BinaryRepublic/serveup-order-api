@@ -25,6 +25,10 @@
       {
         "val": 6,
         "synonym": ["sechs", "sechsmal"]
+      },
+      {
+        "val": 14,
+        "synonym": ["vierzehn", "vierzehn mal"]
       }
     ]
   },
@@ -32,7 +36,8 @@
     "small": [
       "klein",
       "wenig",
-      "schuss"
+      "schuss",
+      "bisschen"
     ],
     "middle": [
       "mittel",
@@ -55,6 +60,13 @@
         ]
       },
       {
+        "val": 750,
+        "synonym": [
+          "075",
+          "dreiviertel liter"
+        ]
+      },
+      {
         "val": 1500,
         "synonym": [
           "anderthalb liter"
@@ -70,12 +82,6 @@
       "weiterhin",
       "dann",
       "noch"
-    ],
-    "editAdd": [
-      "mit"
-    ],
-    "editDiff": [
-      "ohne"
     ]
   },
   "splitRules": [
@@ -130,8 +136,20 @@
       "synonym": ["kalt"]
     },
     {
+      "name": "schokolade",
+      "synonym": ["kakao"]
+    },
+    {
       "name": "pilsener",
       "synonym": ["pils"]
+    },
+    {
+      "name": "still",
+      "synonym": ["ohne kohlensäure"]
+    },
+    {
+      "name": "medium",
+      "synonym": ["prickelnd", "sprudel", "mit kohlensäure"]
     }
   ]
 }

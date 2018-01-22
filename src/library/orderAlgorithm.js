@@ -1,6 +1,6 @@
 const Helper = require('./helper');
-const RealmController = require('../realm/RealmController.js');
-const OrderController = require('../realm/OrderController.js');
+// const RealmController = require('../realm/RealmController.js');
+// const OrderController = require('../realm/OrderController.js');
 
 function search (srcStr, searchStr) {
     let result = [];
@@ -88,8 +88,8 @@ function searchName (input, drinks, defaultSynonyms, index = [], result = []) {
                 result.push({
                     inputPos: synonym.inputPos,
                     inputVal: synonym.inputVal,
-                    name: synonym.name,
-                    menuPos: index
+                    name: synonym.defaultSynonymsName,
+                    menuPos: newIndex
                 });
             }
         }
@@ -295,7 +295,7 @@ function splitOrdersByKeywords (keywords, splitRules, menu) {
                 }
             }
         }
-        if (kombo[kombo.length-1].length === 1) {
+        if (kombo.length && kombo[kombo.length-1].length === 1) {
             kombo.splice(kombo.length-1, 1);
         }
 
@@ -389,7 +389,7 @@ function splitOrdersByKeywords (keywords, splitRules, menu) {
                     let newSplitItem = [];
                     let spliceLength = splitRuleLength;
                     for (let z = 0; z < spliceLength; z++) {
-                        if ((z + 1) < splitRuleLength && basicSplit[x][z].name && basicSplit[x][z + 1].name) {
+                        if (basicSplit[x][z + 1] && basicSplit[x][z].name && basicSplit[x][z + 1].name) {
                             spliceLength++;
                         }
                         newSplitItem.push(basicSplit[x][z]);
@@ -399,8 +399,11 @@ function splitOrdersByKeywords (keywords, splitRules, menu) {
                 }
             }
         }
+        // check whether only name is given
+        if (normalized.length === 1 && normalized[0] === 'name') {
+            finalSplit.push(basicSplit[x]);
+        }
     }
-    // let result = orderArr;
     return finalSplit;
 }
 
@@ -437,6 +440,7 @@ function compareNames (nameBlocks, menu) {
             }
         }
     }
+
     // compare similarity arrays (find biggest)
     let max = 0;
     let maxIndex = false;
@@ -632,6 +636,7 @@ exports.main = function (menu, input, orderRoute) {
     let cfg = require('./testJSON/algorithm');
 
     input = input.replace(/[&\/\\#,+()$~%.'":*?<>{}!]/g,'');
+    input = input.replace('-', ' ');
     input = input.toLowerCase();
     input = ' ' + input + ' ';
 
@@ -655,6 +660,7 @@ exports.main = function (menu, input, orderRoute) {
         let nameBlocks = createBlocksByNameObj(orderBlocks[x]);
         // --- single nameBlock per orderBlock
         // get default product by nameBlock
+
         if (nameBlocks.length === 1) {
             orderBlocks[x].product = getDefaultByBlock(nameBlocks[0], menu.drinks, menu.defaultParent);
         }
@@ -672,11 +678,11 @@ exports.main = function (menu, input, orderRoute) {
     // create final order by orderBlock
     // or create response
     let order = createOrderByBlock(orderBlocks, menu.drinks, menu.size);
-    let realmController = new RealmController(function() {
+    /* let realmController = new RealmController(function() {
         let orderController = new OrderController(realmController);
         let orderObj = {}
         orderController.addOrder(orderObj);
-    });
+    }); */
 
     let response;
     if (orderRoute === "/testorder") {
