@@ -25,6 +25,10 @@
       {
         "val": 6,
         "synonym": ["sechs", "sechsmal"]
+      },
+      {
+        "val": 14,
+        "synonym": ["vierzehn", "vierzehn mal"]
       }
     ]
   },
@@ -32,7 +36,8 @@
     "small": [
       "klein",
       "wenig",
-      "schuss"
+      "schuss",
+      "bisschen"
     ],
     "middle": [
       "mittel",
@@ -55,6 +60,13 @@
         ]
       },
       {
+        "val": 750,
+        "synonym": [
+          "075",
+          "dreiviertel liter"
+        ]
+      },
+      {
         "val": 1500,
         "synonym": [
           "anderthalb liter"
@@ -68,15 +80,52 @@
       "plus",
       "außerdem",
       "weiterhin",
-      "dann"
-    ],
-    "editAdd": [
-      "mit"
-    ],
-    "editDiff": [
-      "ohne"
+      "dann",
+      "noch"
     ]
   },
+  "splitRules": [
+    {
+      "rule": "nb-size-name",
+      "prob": 10
+    },
+    {
+      "rule": "nb-name",
+      "prob": 9
+    },
+    {
+      "rule": "nb-name-size",
+      "prob": 8
+    },
+    {
+      "rule": "name-size",
+      "prob": 7
+    },
+    {
+      "rule": "name-nb",
+      "prob": 6
+    },
+    {
+      "rule": "name-nb-size",
+      "prob": 5
+    },
+    {
+      "rule": "name-size-nb",
+      "prob": 4
+    },
+    {
+      "rule": "size-name",
+      "prob": 3
+    },
+    {
+      "rule": "size-name-nb",
+      "prob": 2
+    },
+    {
+      "rule": "size-nb-name",
+      "prob": 1
+    }
+  ],
   "defaultSynonyms": [
     {
       "name": "heiß",
@@ -87,8 +136,20 @@
       "synonym": ["kalt"]
     },
     {
+      "name": "schokolade",
+      "synonym": ["kakao"]
+    },
+    {
       "name": "pilsener",
       "synonym": ["pils"]
+    },
+    {
+      "name": "still",
+      "synonym": ["ohne kohlensäure"]
+    },
+    {
+      "name": "medium",
+      "synonym": ["prickelnd", "sprudel", "mit kohlensäure"]
     }
   ]
 }
