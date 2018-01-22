@@ -614,7 +614,7 @@ function createOrderByBlock (orderBlocks, menu) {
                 }
             } else {
                 // search for default
-                menuObj.var.filter((x) => {
+                menuObj.var = menuObj.var.filter((x) => {
                     return x.default;
                 }, menuObj.var);
                 if (menuObj.var.length) {

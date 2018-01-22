@@ -691,12 +691,12 @@
               "var": [
                 {
                   "size": 250,
-                  "price": 2.6,
-                  "default": true
+                  "price": 2.6
                 },
                 {
                   "size": 750,
-                  "price": 5.9
+                  "price": 5.9,
+                  "default": true
                 }
               ]
             },
