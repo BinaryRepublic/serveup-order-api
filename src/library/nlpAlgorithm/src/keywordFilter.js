@@ -1,0 +1,234 @@
+const cfg = require('../cfg');
+
+class KeywordsFilter {
+
+    constructor (menu, input) {
+        this.menu = menu;
+        this.input = input;
+
+        this.search = this.search.bind(this);
+
+        this.searchForNameResult = this.searchForNameResult.bind(this);
+        this.searchName = this.searchName.bind(this);
+
+        this.searchForNbResult = this.searchForNbResult.bind(this);
+        this.searchNb = this.searchNb.bind(this);
+
+        this.searchSizeByObjKey = this.searchSizeByObjKey.bind(this);
+        this.searchForSizeResult = this.searchForSizeResult.bind(this);
+        this.searchSize = this.searchSize.bind(this);
+
+        this.searchForConjResult = this.searchForConjResult.bind(this);
+        this.searchConj = this.searchConj.bind(this);
+    }
+
+    search (searchStr) {
+        let result = [];
+        let lastIndex = 0;
+
+        let srcStr = this.input;
+
+        let pos = -1;
+        let searchSuffix = [
+            "", "e", "es", "er", "en", "n"
+        ];
+        do {
+            for (let x = 0; x < searchSuffix.length; x++) {
+                let searchVal = searchStr + searchSuffix[x];
+                pos = srcStr.indexOf(' ' + searchVal + ' ', lastIndex);
+                if (pos !== -1) {
+                    result.push({
+                        pos: pos,
+                        val: searchVal
+                    });
+                    break;
+                }
+            }
+            lastIndex = pos + 1;
+        } while (pos !== -1);
+        return result;
+    };
+
+    // --- NAME
+
+    searchForNameResult (searchStr, menuPos, defaultSynonymsName, result) {
+        let searchRes = this.search(searchStr);
+        if (searchRes.length) {
+            for (let x = 0; x < searchRes.length; x++) {
+                let resultObj = {
+                    inputPos: searchRes[x].pos,
+                    inputVal: searchRes[x].val,
+                    name: searchStr
+                };
+                if (menuPos) {
+                    // element from menu
+                    resultObj.menuPos = menuPos;
+                } else {
+                    // defaultSynonym
+                    resultObj.defaultSynonymsName = defaultSynonymsName;
+                }
+                result.push(resultObj);
+            }
+        }
+        return result;
+    };
+    searchName (drinks = false, index = [], result = []) {
+        if (drinks === false) {
+            drinks = this.menu.drinks;
+        }
+        let defaultSynonyms = cfg.defaultSynonyms;
+
+        let defaultSynonymsResults = [];
+        if (!index.length) {
+            // not recursive!
+            // get all defaultSynonyms first
+            for (let x = 0; x < defaultSynonyms.length; x++) {
+                let currentElem = defaultSynonyms[x];
+                for (let y = 0; y < currentElem.synonym.length; y++) {
+                    let synonym = currentElem.synonym[y];
+                    defaultSynonymsResults = this.searchForNameResult(synonym, false, currentElem.name, defaultSynonymsResults);
+                }
+            }
+        } else {
+            // recursive!
+            // load defaultSynonymsResult from fct param
+            defaultSynonymsResults = defaultSynonyms;
+        }
+
+        for (let x = 0; x < drinks.length; x++) {
+            let newIndex = index.slice(); // copy by value
+            // recursive for getting all childrens
+            newIndex.push(x);
+            if (drinks[x].child) {
+                result = this.searchName(drinks[x].child, newIndex, result);
+            }
+            // search for name
+            let drinkName = drinks[x].name;
+            result = this.searchForNameResult(drinkName, newIndex, false, result);
+            if (drinks[x].synonym) {
+                for (let y = 0; y < drinks[x].synonym.length; y++) {
+                    result = this.searchForNameResult(drinks[x].synonym[y], newIndex, false, result);
+                }
+            }
+            // search for defaultSynonym <> menu matches
+            for (let y = 0; y < defaultSynonymsResults.length; y++) {
+                let synonym = defaultSynonymsResults[y];
+                if (synonym.defaultSynonymsName === drinkName) {
+                    result.push({
+                        inputPos: synonym.inputPos,
+                        inputVal: synonym.inputVal,
+                        name: synonym.defaultSynonymsName,
+                        menuPos: newIndex
+                    });
+                }
+            }
+        }
+
+        // order by inputPos
+        result = result.sort((a, b) => {
+            return parseInt(a.inputPos) - parseInt(b.inputPos);
+        });
+
+        return result;
+    };
+
+    // --- NUMBER
+
+    searchForNbResult (searchStr, val, result) {
+        let searchRes = this.search(searchStr);
+        if (searchRes.length) {
+            for (let x = 0; x < searchRes.length; x++) {
+                result.push({
+                    inputPos: searchRes[x].pos,
+                    inputVal: searchRes[x].val,
+                    nb: searchStr,
+                    val: val
+                });
+            }
+        }
+        return result;
+    }
+    searchNb () {
+        let nbWords = cfg.numbers.content;
+        let result = [];
+        for (let x = 0; x < nbWords.length; x++) {
+            result = this.searchForNbResult(nbWords[x].val, nbWords[x].val, result);
+            for (let y = 0; y < nbWords[x].synonym.length; y++) {
+                result = this.searchForNbResult(nbWords[x].synonym[y], nbWords[x].val, result);
+            }
+        }
+        return result;
+    };
+
+    // --- SIZE
+
+    searchForSizeResult (searchStr, sizeVal, result) {
+        let searchRes = this.search(searchStr);
+        if (searchRes.length) {
+            for (let x = 0; x < searchRes.length; x++) {
+                result.push({
+                    inputPos: searchRes[x].pos,
+                    inputVal: searchRes[x].val,
+                    size: searchStr,
+                    val: sizeVal
+                });
+            }
+        }
+        return result;
+    }
+    searchSizeByObjKey (objKey, result) {
+        let searchObj = cfg.size;
+        for (let x = 0; x < searchObj.length; x++) {
+            if (objKey === 'var') {
+                for (let y = 0; y < searchObj[x].synonym.length; y++) {
+                    result = this.searchForSizeResult(searchObj[x].synonym[y], searchObj[x].val, result);
+                }
+            } else {
+                result = this.searchForSizeResult(searchObj[x], objKey, result);
+            }
+        }
+        return result;
+    }
+    searchSize () {
+        let result = [];
+
+        // search for general sizes
+        result = this.searchSizeByObjKey('small', result);
+        result = this.searchSizeByObjKey('big', result);
+        // search for specific sizes
+        result = this.searchSizeByObjKey('var', result);
+
+        return result;
+    };
+
+
+    // --- CONJUNCTIONS
+
+    searchForConjResult (searchStr, type, result) {
+        let searchRes = this.search(searchStr);
+        if (searchRes.length) {
+            for (let x = 0; x < searchRes.length; x++) {
+                result.push({
+                    inputPos: searchRes[x].pos,
+                    inputVal: searchRes[x].val,
+                    conj: searchStr,
+                    type: type
+                });
+            }
+        }
+        return result;
+    };
+    searchConj () {
+        let conjObj = cfg.conjunction;
+        let result = [];
+        for (let key in conjObj) {
+            let currentObj = conjObj[key];
+            for (let x = 0; x < currentObj.length; x++) {
+                result = this.searchForConjResult(currentObj[x], key, result);
+            }
+        }
+        return result;
+    };
+}
+
+module.exports = KeywordsFilter;
