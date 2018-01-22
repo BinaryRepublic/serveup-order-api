@@ -167,7 +167,7 @@ class nameOperations {
                 }
             }
             // search for next parent
-            parentName = getParent(parentName);
+            parentName = this.getParent(parentName);
         } while (parentName && nameBlock.length > 1);
 
         // default from blocks created

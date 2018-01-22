@@ -56,14 +56,19 @@ class finalOrder {
                         // QUESTION size not available
                     }
                 } else {
-                    // search for default
-                    menuObj.var = menuObj.var.filter((x) => {
-                        return x.default;
-                    }, menuObj.var);
-                    if (menuObj.var.length) {
+                    if (menuObj.var.length === 1) {
+                        // only one size available
                         newOrder.size = menuObj.var[0].size;
                     } else {
-                        // QUESTION no default size defined
+                        // search for default
+                        menuObj.var = menuObj.var.filter((x) => {
+                            return x.default;
+                        }, menuObj.var);
+                        if (menuObj.var.length) {
+                            newOrder.size = menuObj.var[0].size;
+                        } else {
+                            // QUESTION no default size defined
+                        }
                     }
                 }
                 order.push(newOrder);

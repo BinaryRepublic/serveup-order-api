@@ -137,7 +137,7 @@ class Splitting {
             if (kombo.length) {
                 let NameOperations = require('./nameOperations');
                 let nameOperations = new NameOperations(this.menu);
-                console.log(kombo);
+
                 let komboResult = nameOperations.getProductByComparison(kombo);
                 if (!komboResult) {
                     // ÜBERARBEITEN > RESPONSE
@@ -192,7 +192,7 @@ class Splitting {
                         let splitRuleLength = this.splitRules[splitRuleIndex].rule.split('-').length;
                         let newSplitItem = [];
                         let spliceLength = splitRuleLength;
-                        for (let z = 0; z < spliceLength; z++) {
+                        for (let z = 0; z < spliceLength && basicSplit[x][z]; z++) {
                             if (basicSplit[x][z + 1] && basicSplit[x][z].name && basicSplit[x][z + 1].name) {
                                 spliceLength++;
                             }

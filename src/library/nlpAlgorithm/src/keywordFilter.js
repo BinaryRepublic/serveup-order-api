@@ -177,7 +177,7 @@ class KeywordsFilter {
         return result;
     }
     searchSizeByObjKey (objKey, result) {
-        let searchObj = cfg.size;
+        let searchObj = cfg.size[objKey];
         for (let x = 0; x < searchObj.length; x++) {
             if (objKey === 'var') {
                 for (let y = 0; y < searchObj[x].synonym.length; y++) {

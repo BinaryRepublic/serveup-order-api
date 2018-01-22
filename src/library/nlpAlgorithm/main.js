@@ -58,10 +58,11 @@ module.exports = function (menu, input, orderRoute) {
     // or create response
     let FinalOrder = require('./src/finalOrder');
     let finalOrder = new FinalOrder(menu, orderBlocks);
+
     let order = finalOrder.createOrder();
     let realmController = new RealmController(function() {
         let orderController = new OrderController(realmController);
-        let orderObj = {}
+        let orderObj = {};
         orderController.addOrder(orderObj);
     });
 
