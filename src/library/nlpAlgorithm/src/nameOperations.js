@@ -181,7 +181,7 @@ class nameOperations {
         }
 
         // find default childs
-        while (result.default || result.child) {
+        while (result.child.length || result.default) {
             if (result.default) {
                 for (let x = 0; x < result.child.length; x++) {
                     if (result.child[x].name === result.default) {
@@ -195,9 +195,9 @@ class nameOperations {
                 menuPos.push(0);
             }
         }
+
         // add menuPos to find full name later
         result.menuPos = menuPos;
-
         return result;
     }
 }

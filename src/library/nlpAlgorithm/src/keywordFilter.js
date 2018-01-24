@@ -72,16 +72,15 @@ class KeywordsFilter {
         }
         return result;
     };
-    searchName (drinks = false, index = [], result = []) {
+    searchName (drinks = false, index = [], result = [], defaultSynonymsResults = []) {
         if (drinks === false) {
             drinks = this.menu.drinks;
         }
-        let defaultSynonyms = cfg.defaultSynonyms;
 
-        let defaultSynonymsResults = [];
         if (!index.length) {
             // not recursive!
             // get all defaultSynonyms first
+            let defaultSynonyms = cfg.defaultSynonyms;
             for (let x = 0; x < defaultSynonyms.length; x++) {
                 let currentElem = defaultSynonyms[x];
                 for (let y = 0; y < currentElem.synonym.length; y++) {
@@ -89,10 +88,6 @@ class KeywordsFilter {
                     defaultSynonymsResults = this.searchForNameResult(synonym, false, currentElem.name, defaultSynonymsResults);
                 }
             }
-        } else {
-            // recursive!
-            // load defaultSynonymsResult from fct param
-            defaultSynonymsResults = defaultSynonyms;
         }
 
         for (let x = 0; x < drinks.length; x++) {
@@ -100,7 +95,7 @@ class KeywordsFilter {
             // recursive for getting all childrens
             newIndex.push(x);
             if (drinks[x].child) {
-                result = this.searchName(drinks[x].child, newIndex, result);
+                result = this.searchName(drinks[x].child, newIndex, result, defaultSynonymsResults);
             }
             // search for name
             let drinkName = drinks[x].name;

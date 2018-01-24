@@ -1,6 +1,3 @@
-const RealmController = require('../../realm/RealmController.js');
-const OrderController = require('../../realm/OrderController.js');
-
 module.exports = function (menu, input, orderRoute) {
     let cfg = require('./cfg');
 
@@ -24,7 +21,7 @@ module.exports = function (menu, input, orderRoute) {
     keywordsObj.nb = keywordsFilter.searchNb();
     keywordsObj.size = keywordsFilter.searchSize();
     keywordsObj.conj = keywordsFilter.searchConj();
-
+    console.log(keywordsObj.name);
     // split products
     let Splitting = require('./src/splitting');
     let splitting = new Splitting(menu, keywordsObj);
@@ -43,6 +40,7 @@ module.exports = function (menu, input, orderRoute) {
         if (nameBlocks.length === 1) {
             orderBlocks[x].product = nameOperations.getProductByDefault(nameBlocks[0]);
         }
+
         // --- multiple nameBlocks per orderBlock
         // match multiple nameBlocks
         if (nameBlocks.length > 1) {
@@ -60,16 +58,11 @@ module.exports = function (menu, input, orderRoute) {
     let finalOrder = new FinalOrder(menu, orderBlocks);
 
     let order = finalOrder.createOrder();
-    let realmController = new RealmController(function() {
-        let orderController = new OrderController(realmController);
-        let orderObj = {};
-        orderController.addOrder(orderObj);
-    });
 
     let response;
     if (orderRoute === "/testorder") {
         // API Route for internal WebApp (test.html)
-        response = keywords;
+        response = keywordsObj;
     } else if(orderRoute === "/apporder") {
         // API Route for testing orders from voice assistants
         response = order;
