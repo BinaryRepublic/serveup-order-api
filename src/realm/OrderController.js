@@ -8,7 +8,7 @@ class OrderController {
 	addOrder(order) {
 		if(this.orderObjectIsValid(order)) {
 			order.timestamp = new Date();
-			order.orderId = uuidv4();
+			order.id = uuidv4();
 			this.realmController.addOrder(order);
 		}
 		else {
