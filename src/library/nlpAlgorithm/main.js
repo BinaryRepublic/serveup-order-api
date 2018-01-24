@@ -21,7 +21,7 @@ module.exports = function (menu, input, orderRoute) {
     keywordsObj.nb = keywordsFilter.searchNb();
     keywordsObj.size = keywordsFilter.searchSize();
     keywordsObj.conj = keywordsFilter.searchConj();
-    console.log(keywordsObj.name);
+
     // split products
     let Splitting = require('./src/splitting');
     let splitting = new Splitting(menu, keywordsObj);

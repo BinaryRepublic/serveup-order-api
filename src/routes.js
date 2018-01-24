@@ -1,7 +1,10 @@
 const Router = require('express').Router();
 
-Router.post('/order', require("./controller/order").sendOrder);
-Router.post('/testorder', require("./controller/order").sendOrder);
-Router.post('/apporder', require("./controller/order").sendOrder);
+const OrderController = require('./controller/OrderController');
+
+let orderController = new OrderController();
+Router.post('/order', orderController.getOrder);
+Router.post('/testorder', orderController.getOrder);
+Router.post('/apporder', orderController.getOrder);
 
 module.exports = Router;
