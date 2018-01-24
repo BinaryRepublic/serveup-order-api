@@ -6,11 +6,11 @@
                 var input = document.getElementById("input").value;
                 $.post( "http://localhost:3000/testorder", { order: input })
                 .done(function( data ) {
-                    addOrder(JSON.parse(data));
+                    addOrder(data);
                 });
             }
             function addOrder (order) {
-                let outputStr = $("#input").val();
+                let outputStr = $("#input").val().toLowerCase();
                 $("#input").val('');
                 let newResponse = outputStr;
                 let words = newResponse.split(" ");
