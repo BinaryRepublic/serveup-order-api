@@ -14,10 +14,12 @@ class OrderController extends APIController {
         this.handleRequest(reqValid, () => {
             let input = req.body.order;
             let restaurantId = '1';
-            let menu = {
+            /* let menu = {
                 drinks: this.realmController.getDrinksByRestaurantId(restaurantId),
                 defaultParent: this.realmController.getDefaultParentByRestaurantId(restaurantId)
-            };
+            }; */
+            // sample menu
+            let menu = require('../library/testJSON/menu');
 
             let nlpAlgorithm = require("../library/nlpAlgorithm/main");
             let order = nlpAlgorithm(menu, input, req.originalUrl);
