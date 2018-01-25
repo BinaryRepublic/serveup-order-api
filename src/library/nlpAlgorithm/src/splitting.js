@@ -203,10 +203,6 @@ class Splitting {
                     }
                 }
             }
-            // check whether only name is given
-            if (normalized.length === 1 && normalized[0] === 'name') {
-                finalSplit.push(basicSplit[x]);
-            }
         }
         return finalSplit;
     }
