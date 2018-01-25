@@ -181,7 +181,7 @@ class nameOperations {
         }
 
         // find default childs
-        while (result.child.length || result.default) {
+        while (result.child !== undefined && (result.child.length || result.default)) {
             if (result.default) {
                 for (let x = 0; x < result.child.length; x++) {
                     if (result.child[x].name === result.default) {
