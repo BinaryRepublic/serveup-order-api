@@ -124,6 +124,10 @@
     {
       "rule": "size-nb-name",
       "prob": 1
+    },
+    {
+      "rule": "name",
+      "prob": 0.5
     }
   ],
   "defaultSynonyms": [
