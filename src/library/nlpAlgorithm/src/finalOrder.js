@@ -2,7 +2,6 @@ const Helper = require('../helper');
 const cfg = require('../cfg');
 
 class finalOrder {
-
     constructor (menu, orderBlocks) {
         this.menu = menu;
         this.orderBlocks = orderBlocks;
@@ -13,7 +12,7 @@ class finalOrder {
     getTypeVal (type, orderBlockIndex) {
         let worker = this.orderBlocks.slice();
         return worker[orderBlockIndex].filter((x) => {
-            return x[type]
+            return x[type];
         }, worker[orderBlockIndex])[0];
     }
     createOrder () {
@@ -43,10 +42,10 @@ class finalOrder {
                 }
                 // size
                 if (size) {
-                    let variations = Helper.orderObjArray(menuObj.var, "size");
+                    let variations = Helper.orderObjArray(menuObj.var, 'size');
                     newOrder.size = false;
                     if (size.val === 'big') {
-                        newOrder.size = variations[variations.length-1].size;
+                        newOrder.size = variations[variations.length - 1].size;
                     } else if (size.val === 'small') {
                         newOrder.size = variations[0].size;
                     } else if (!isNaN(size.val)) {
@@ -55,20 +54,18 @@ class finalOrder {
                     if (!newOrder.size) {
                         // QUESTION size not available
                     }
+                } else if (menuObj.var.length === 1) {
+                    // only one size available
+                    newOrder.size = menuObj.var[0].size;
                 } else {
-                    if (menuObj.var.length === 1) {
-                        // only one size available
+                    // search for default
+                    menuObj.var = menuObj.var.filter((x) => {
+                        return x.default;
+                    }, menuObj.var);
+                    if (menuObj.var.length) {
                         newOrder.size = menuObj.var[0].size;
                     } else {
-                        // search for default
-                        menuObj.var = menuObj.var.filter((x) => {
-                            return x.default;
-                        }, menuObj.var);
-                        if (menuObj.var.length) {
-                            newOrder.size = menuObj.var[0].size;
-                        } else {
-                            // QUESTION no default size defined
-                        }
+                        // QUESTION no default size defined
                     }
                 }
                 order.push(newOrder);

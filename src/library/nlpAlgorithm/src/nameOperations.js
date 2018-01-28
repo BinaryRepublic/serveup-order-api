@@ -1,7 +1,6 @@
 const Helper = require('../helper');
 
 class nameOperations {
-
     constructor (menu) {
         this.menu = menu;
 
@@ -56,7 +55,7 @@ class nameOperations {
         let similarities = [];
         for (let x = 0; x < nameKeywords.length; x++) {
             similarities[x] = [nameKeywords[x]];
-            for (let y = x+1; y < nameKeywords.length; y++) {
+            for (let y = x + 1; y < nameKeywords.length; y++) {
                 // compare by menuPos
                 let matching = true;
                 for (let z = 0; z < nameKeywords[x].menuPos.length; z++) {

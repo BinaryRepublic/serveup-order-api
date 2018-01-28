@@ -1,4 +1,4 @@
-exports.orderObjArray =  (objArray, key) => {
+exports.orderObjArray = (objArray, key) => {
     for (let x = 0; x < objArray.length; x++) {
         let min = -1;
         let minIndex = 0;
