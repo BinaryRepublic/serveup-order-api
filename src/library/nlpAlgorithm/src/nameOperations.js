@@ -132,10 +132,10 @@ class nameOperations {
     }
 
     getParent (name) {
-        let defaultParent = this.menu.defaultParent;
-        for (let x = 0; x < defaultParent.length; x++) {
-            if (defaultParent[x].name === name) {
-                return defaultParent[x].parent;
+        let defaultParents = this.menu.defaultParents;
+        for (let x = 0; x < defaultParents.length; x++) {
+            if (defaultParents[x].name === name) {
+                return defaultParents[x].parent;
             }
         }
         return false;
@@ -159,7 +159,7 @@ class nameOperations {
                 for (let y = 1; y < menuPos.length - layer; y++) {
                     parentObj = parentObj.child[menuPos[y]];
                 }
-                // check if parent matches defaultParent > remove nameBlock if false
+                // check if parent matches defaultParents > remove nameBlock if false
                 if (parentObj.name !== parentName && nameBlock.length > 1) {
                     nameBlock.splice(x, 1);
                     x--;

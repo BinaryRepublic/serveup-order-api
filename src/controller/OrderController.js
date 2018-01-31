@@ -13,11 +13,7 @@ class OrderController extends APIController {
         let reqValid = this.requestValidator.validRequestData(req.body, ['order']);
         this.handleRequest(reqValid, () => {
             let input = req.body.order;
-            let restaurantId = '1';
-            /* let menu = {
-                drinks: this.realmController.formatRealmObj(this.realmController.getDrinksByRestaurantId(restaurantId)),
-                defaultParent: this.realmController.formatRealmObj(this.realmController.getDefaultParentByRestaurantId(restaurantId))
-            }; */
+            // load menu from database
             // sample menu
             let menu = require('../library/testJSON/menu');
 

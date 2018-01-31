@@ -70,7 +70,6 @@ class finalOrder {
                 }
                 order.push(newOrder);
             } else {
-                // WEITERMACHEN
                 // QUESTION product not defined > should be impossible because of splitting
             }
         }
