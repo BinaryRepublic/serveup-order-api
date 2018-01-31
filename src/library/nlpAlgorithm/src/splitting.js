@@ -2,7 +2,6 @@ const cfg = require('../cfg');
 const Helper = require('../helper');
 
 class Splitting {
-
     constructor (menu, keywords) {
         this.menu = menu;
         this.keywords = keywords;
@@ -69,7 +68,7 @@ class Splitting {
             }
         }
         // order keywords
-        keywords = Helper.orderObjArray(merged, "inputPos");
+        keywords = Helper.orderObjArray(merged, 'inputPos');
 
         // BASIC SPLIT > split by conj-add
         let basicSplit = [];
@@ -111,26 +110,26 @@ class Splitting {
                 }
 
                 // add new element to normalization
-                if (normalized[normalized.length-1] !== type || type !== 'name') {
+                if (normalized[normalized.length - 1] !== type || type !== 'name') {
                     normalized.push(type);
                 }
 
                 if (lastName && type === 'name') {
-                    kombo[kombo.length-1].push(basicSplitElem);
+                    kombo[kombo.length - 1].push(basicSplitElem);
                 } else {
                     if (type === 'name') {
                         kombo.push([basicSplitElem]);
                         lastName = true;
                     } else if (lastName) {
                         if (kombo.length === 1) {
-                            kombo = kombo.splice(kombo.length-1, 1);
+                            kombo = kombo.splice(kombo.length - 1, 1);
                         }
                         lastName = false;
                     }
                 }
             }
-            if (kombo.length && kombo[kombo.length-1].length === 1) {
-                kombo.splice(kombo.length-1, 1);
+            if (kombo.length && kombo[kombo.length - 1].length === 1) {
+                kombo.splice(kombo.length - 1, 1);
             }
 
             // compare nameKombo

@@ -1,4 +1,4 @@
-"use_strict";
+'use strict';
 
 class RequestValidator {
     validRequestData (data, necessaryData) {
@@ -7,11 +7,11 @@ class RequestValidator {
             let necessaryElem = necessaryData[x];
             if (!data.hasOwnProperty(necessaryElem)) {
                 valid = false;
-                console.error("MISSING: " + necessaryElem);
+                console.error('MISSING: ' + necessaryElem);
                 break;
             }
         }
-        return valid
+        return valid;
     };
 }
 module.exports = RequestValidator;

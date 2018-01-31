@@ -1,7 +1,6 @@
 const cfg = require('../cfg');
 
 class KeywordsFilter {
-
     constructor (menu, input) {
         this.menu = menu;
         this.input = input;
@@ -30,7 +29,7 @@ class KeywordsFilter {
 
         let pos = -1;
         let searchSuffix = [
-            "", "e", "es", "er", "en", "n"
+            '', 'e', 'es', 'er', 'en', 'n'
         ];
         do {
             for (let x = 0; x < searchSuffix.length; x++) {
@@ -195,7 +194,6 @@ class KeywordsFilter {
 
         return result;
     };
-
 
     // --- CONJUNCTIONS
 

@@ -347,25 +347,27 @@
     },
     {
       "name": "sekt",
-      "child": {
-        "name": "prosecco",
-        "child": [
-          {
-            "name": "frizzante",
-            "productName": "Prosecco Frizzante",
-            "var": [
-              {
-                "size": 100,
-                "price": 4.5
-              },
-              {
-                "size": 750,
-                "price": 32
-              }
-            ]
-          }
-        ]
-      }
+      "child": [
+        {
+          "name": "prosecco",
+          "child": [
+            {
+              "name": "frizzante",
+              "productName": "Prosecco Frizzante",
+              "var": [
+                {
+                  "size": 100,
+                  "price": 4.5
+                },
+                {
+                  "size": 750,
+                  "price": 32
+                }
+              ]
+            }
+          ]
+        }
+      ]
     },
     {
       "name": "champagne",
@@ -838,7 +840,7 @@
       ]
     }
   ],
-  "defaultParent": [
+  "defaultParents": [
     {
       "name": "pilsener",
       "parent": "jever"

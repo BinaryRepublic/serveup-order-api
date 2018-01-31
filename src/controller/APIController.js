@@ -1,9 +1,9 @@
-'use_strict'
+'use strict';
 
 const RequestValidator = require('./RequestValidator');
 
 class APIController {
-    constructor() {
+    constructor () {
         this.requestValidator = new RequestValidator();
     };
     handleRequest (requestValid, databaseCallback, res) {
@@ -15,7 +15,7 @@ class APIController {
         }
     };
     handleResponse (res, jsonObject) {
-        if(jsonObject) {
+        if (jsonObject) {
             res.json(jsonObject);
         } else {
             res.sendStatus(500);

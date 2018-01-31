@@ -1,7 +1,6 @@
 const Helper = require('../helper');
 
 class nameOperations {
-
     constructor (menu) {
         this.menu = menu;
 
@@ -56,7 +55,7 @@ class nameOperations {
         let similarities = [];
         for (let x = 0; x < nameKeywords.length; x++) {
             similarities[x] = [nameKeywords[x]];
-            for (let y = x+1; y < nameKeywords.length; y++) {
+            for (let y = x + 1; y < nameKeywords.length; y++) {
                 // compare by menuPos
                 let matching = true;
                 for (let z = 0; z < nameKeywords[x].menuPos.length; z++) {
@@ -133,10 +132,10 @@ class nameOperations {
     }
 
     getParent (name) {
-        let defaultParent = this.menu.defaultParent;
-        for (let x = 0; x < defaultParent.length; x++) {
-            if (defaultParent[x].name === name) {
-                return defaultParent[x].parent;
+        let defaultParents = this.menu.defaultParents;
+        for (let x = 0; x < defaultParents.length; x++) {
+            if (defaultParents[x].name === name) {
+                return defaultParents[x].parent;
             }
         }
         return false;
@@ -160,7 +159,7 @@ class nameOperations {
                 for (let y = 1; y < menuPos.length - layer; y++) {
                     parentObj = parentObj.child[menuPos[y]];
                 }
-                // check if parent matches defaultParent > remove nameBlock if false
+                // check if parent matches defaultParents > remove nameBlock if false
                 if (parentObj.name !== parentName && nameBlock.length > 1) {
                     nameBlock.splice(x, 1);
                     x--;
