@@ -50,13 +50,14 @@ class KeywordsFilter {
 
     // --- NAME
 
-    searchForNameResult (searchStr, menuPos, defaultSynonymsName, result) {
+    searchForNameResult (searchStr, menuPos, defaultSynonymsName, result, alone = true) {
         let searchRes = this.search(searchStr);
         if (searchRes.length) {
             for (let x = 0; x < searchRes.length; x++) {
                 let resultObj = {
                     inputPos: searchRes[x].pos,
                     inputVal: searchRes[x].val,
+                    alone: alone,
                     name: searchStr
                 };
                 if (menuPos) {
@@ -98,10 +99,11 @@ class KeywordsFilter {
             }
             // search for name
             let drinkName = drinks[x].name;
-            result = this.searchForNameResult(drinkName, newIndex, false, result);
+            let alone = (drinks[x].alone !== undefined) ? drinks[x].alone : true;
+            result = this.searchForNameResult(drinkName, newIndex, false, result, alone);
             if (drinks[x].synonym) {
                 for (let y = 0; y < drinks[x].synonym.length; y++) {
-                    result = this.searchForNameResult(drinks[x].synonym[y], newIndex, false, result);
+                    result = this.searchForNameResult(drinks[x].synonym[y], newIndex, false, result, alone);
                 }
             }
             // search for defaultSynonym <> menu matches

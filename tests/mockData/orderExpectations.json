@@ -27,5 +27,18 @@
         "size": 20
       }
     ]
+  },
+  {
+    "order": "Ich hätte gern ein Bier. Das alte von Diebels.",
+    "expect": [
+      {
+        "name": "diebels alt",
+        "nb": 1
+      }
+    ]
+  },
+  {
+    "order": "Ich hätte gern das Alte.",
+    "expect": []
   }
 ]

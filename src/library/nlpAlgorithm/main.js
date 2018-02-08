@@ -32,6 +32,7 @@ module.exports = function (menu, input, orderRoute) {
     for (let x = 0; x < orderBlocks.length; x++) {
         // create name blocks
         let nameBlocks = nameOperations.createNameBlocks(orderBlocks[x].items);
+
         // --- single nameBlock per orderBlock
         // get default product by nameBlock
 

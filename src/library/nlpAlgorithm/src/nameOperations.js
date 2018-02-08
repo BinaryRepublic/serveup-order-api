@@ -50,6 +50,7 @@ class nameOperations {
 
         // split nameBlocks
         let nameKeywords = this.splitNameBlocks(nameBlocks);
+
         // build similarity array
         let similarities = [];
         for (let x = 0; x < nameKeywords.length; x++) {
