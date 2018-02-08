@@ -41,6 +41,7 @@ class OrderController extends APIController {
                 voiceDevice = voiceDevice[0];
                 // FINAL
                 menu = this.realmMenu.getMenuByRestaurantId(voiceDevice.restaurantId);
+                menu = this.realmMenu.formatRealmObj(menu, true);
                 if (menu) {
                     menu = menu[0];
                 } else {
@@ -49,7 +50,6 @@ class OrderController extends APIController {
             }
 
             let input = req.body.order;
-
             let nlpAlgorithm = require('../library/nlpAlgorithm/main');
             let order = nlpAlgorithm(menu, input, req.originalUrl);
 

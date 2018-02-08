@@ -50,7 +50,6 @@ class nameOperations {
 
         // split nameBlocks
         let nameKeywords = this.splitNameBlocks(nameBlocks);
-
         // build similarity array
         let similarities = [];
         for (let x = 0; x < nameKeywords.length; x++) {
@@ -133,9 +132,11 @@ class nameOperations {
 
     getParent (name) {
         let defaultParents = this.menu.defaultParents;
-        for (let x = 0; x < defaultParents.length; x++) {
-            if (defaultParents[x].name === name) {
-                return defaultParents[x].parent;
+        if (defaultParents) {
+            for (let x = 0; x < defaultParents.length; x++) {
+                if (defaultParents[x].name === name) {
+                    return defaultParents[x].parent;
+                }
             }
         }
         return false;

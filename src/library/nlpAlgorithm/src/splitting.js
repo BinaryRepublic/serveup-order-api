@@ -109,14 +109,31 @@ class Splitting {
                     type = 'nb';
                 }
 
-                // add new element to normalization
-                if (normalized[normalized.length - 1] !== type || type !== 'name') {
-                    normalized.push(type);
-                }
-
                 if (lastName && type === 'name') {
-                    kombo[kombo.length - 1].push(basicSplitElem);
+                    // --- handle name kombo
+                    let NameOperations = require('./nameOperations');
+                    let nameOperations = new NameOperations(this.menu);
+                    let testKombo = kombo[kombo.length - 1].slice();
+                    testKombo.push(basicSplitElem);
+                    let komboResult = nameOperations.getProductByComparison(testKombo);
+                    if (!komboResult) {
+                        // invalid kombo
+                        normalized.push({
+                            type: type,
+                            komboNb: 1
+                        });
+                    } else {
+                        // valid kombo
+                        normalized[normalized.length - 1].komboNb++;
+                        kombo[kombo.length - 1].push(basicSplitElem);
+                    }
                 } else {
+                    // --- add new element to normalization,
+                    normalized.push({
+                        type: type,
+                        komboNb: 1 // --- counter of kombos
+                    });
+                    // --- handle kombo detection
                     if (type === 'name') {
                         kombo.push([basicSplitElem]);
                         lastName = true;
@@ -132,22 +149,14 @@ class Splitting {
                 kombo.splice(kombo.length - 1, 1);
             }
 
-            // compare nameKombo
-            if (kombo.length) {
-                let NameOperations = require('./nameOperations');
-                let nameOperations = new NameOperations(this.menu);
-
-                let komboResult = nameOperations.getProductByComparison(kombo);
-                if (!komboResult) {
-                    // ÜBERARBEITEN > RESPONSE
-                    console.log('could not understand you');
-                }
-            }
-
             // split orders
-
-            // let splitOpportunities = matchSplitRules(normalized);
-            this.splitNormalized(normalized);
+            let normalizedTypes = [];
+            normalized.forEach(item => {
+                for (let y = 0; y < item.komboNb; y++) {
+                    normalizedTypes.push(item.type);
+                }
+            });
+            this.splitNormalized(normalizedTypes);
 
             if (!this.allMatches.length) {
                 // couldn't understand
@@ -166,6 +175,7 @@ class Splitting {
                     x--;
                 }
             } else {
+                // calculation normalization pattern with highest probability
                 let max = -1;
                 let maxIndex = false;
                 for (let y = 0; y < this.allMatches.length; y++) {
@@ -186,23 +196,38 @@ class Splitting {
 
                 // final split
                 if (maxIndex !== false) {
+                    let normalizedIndex = 0;
                     for (let y = 0; y < this.allMatches[maxIndex].length; y++) {
                         let splitRuleIndex = this.allMatches[maxIndex][y];
                         let splitRuleLength = this.splitRules[splitRuleIndex].rule.split('-').length;
-                        let newSplitItem = [];
+                        let newSplitItem = {
+                            items: []
+                        };
                         let spliceLength = splitRuleLength;
                         for (let z = 0; z < spliceLength && basicSplit[x][z]; z++) {
-                            if (basicSplit[x][z + 1] && basicSplit[x][z].name && basicSplit[x][z + 1].name) {
+                            while (normalized[normalizedIndex].komboNb > 1) {
                                 spliceLength++;
+                                normalized[normalizedIndex].komboNb--;
                             }
-                            newSplitItem.push(basicSplit[x][z]);
+                            newSplitItem.items.push(basicSplit[x][z]);
+                            normalizedIndex++;
+                        }
+                        if (x < 0 && y === 0) {
+                            // splitItem had an addConj beforehand
+                            newSplitItem.splitType = 'conjAdd';
+                        } else {
+                            // splitItem was split via splitRules
+                            newSplitItem.splitType = 'splitRules';
                         }
                         basicSplit[x].splice(0, spliceLength);
                         finalSplit.push(newSplitItem);
                     }
                 }
             }
+            // reset normalized matches
+            this.allMatches = [];
         }
+
         return finalSplit;
     }
 }

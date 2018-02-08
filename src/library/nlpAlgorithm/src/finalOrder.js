@@ -7,23 +7,55 @@ class finalOrder {
         this.orderBlocks = orderBlocks;
 
         this.createOrder = this.createOrder.bind(this);
+        this.specifyOrder = this.specifyOrder.bind(this);
     }
 
     getTypeVal (type, orderBlockIndex) {
         let worker = this.orderBlocks.slice();
-        return worker[orderBlockIndex].filter((x) => {
+        return worker[orderBlockIndex].items.filter((x) => {
             return x[type];
         }, worker[orderBlockIndex])[0];
+    }
+    specifyOrder (order) {
+        let finalOrder = [];
+        let worker = order.slice();
+        while (worker.length) {
+            let searchOrder = worker[0];
+            let specifying = false;
+            for (let x = 1; x < worker.length; x++) {
+                let specifiedOrder = worker[x];
+                if (specifiedOrder.name === searchOrder.name) {
+                    if (specifiedOrder.splitType !== 'conjAdd') {
+                        specifying = true;
+                        for (let key in searchOrder) {
+                            if (!specifiedOrder[key]) {
+                                worker[x][key] = searchOrder[key];
+                            }
+                        }
+                    }
+                    break;
+                }
+            }
+            if (!specifying) {
+                // no specifying was done > add search order
+                finalOrder.push(searchOrder);
+            }
+            worker.splice(0, 1);
+        }
+        return finalOrder;
     }
     createOrder () {
         let drinks = this.menu.drinks;
         let order = [];
+
         for (let x = 0; x < this.orderBlocks.length; x++) {
             let nb = this.getTypeVal('nb', x);
             let size = this.getTypeVal('size', x);
             let product = this.orderBlocks[x].product;
 
-            let newOrder = {};
+            let newOrder = {
+                splitType: this.orderBlocks[x].splitType
+            };
 
             if (product) {
                 // generate product name
@@ -73,8 +105,15 @@ class finalOrder {
                 // QUESTION product not defined > should be impossible because of splitting
             }
         }
+        // check if some orders were made to specify older objects
+        order = this.specifyOrder(order);
+
+        // delete split types
+        order.forEach(item => {
+            delete item.splitType;
+        });
+
         return order;
     }
 }
-
 module.exports = finalOrder;
