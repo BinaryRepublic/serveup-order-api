@@ -1,0 +1,844 @@
+{
+  "drinks": [
+    {
+      "name": "bier",
+      "synonym": [
+        "vom fass"
+      ],
+      "default": "jever",
+      "child": [
+        {
+          "name": "börsenbier",
+          "productName": "börsenbier",
+          "synonym": [
+            "börse"
+          ],
+          "var": [
+            {
+              "size": 300,
+              "price": 2.6
+            },
+            {
+              "size": 500,
+              "price": 3.9
+            },
+            {
+              "size": 1500,
+              "price": 11.7
+            }
+          ]
+        },
+        {
+          "name": "jever",
+          "default": "pilsener",
+          "child": [
+            {
+              "name": "pilsener",
+              "productName": "jever pilsener",
+              "var": [
+                {
+                  "size": 300,
+                  "price": 2.9
+                },
+                {
+                  "size": 500,
+                  "price": 4.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "paulaner",
+          "default": "premium",
+          "child": [
+            {
+              "name": "premium",
+              "default": "pilsener",
+              "child": [
+                {
+                  "name": "pilsener",
+                  "productName": "paulaner premium pils",
+                  "var": [
+                    {
+                      "size": 300,
+                      "price": 3
+                    },
+                    {
+                      "size": 500,
+                      "price": 4.5
+                    },
+                    {
+                      "size": 1000,
+                      "price": 9.9
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "kristall",
+              "child": [
+                {
+                  "name": "weizen",
+                  "productName": "paulaner kristallweizen",
+                  "var": [
+                    {
+                      "size": 500,
+                      "price": 4.5
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "hacker",
+          "default": "pschorr",
+          "child": [
+            {
+              "name": "pschorr",
+              "productName": "hacker-pschorr",
+              "var": [
+                {
+                  "size": 300,
+                  "price": 2.9
+                },
+                {
+                  "size": 500,
+                  "price": 4.4
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "diebels",
+          "child": [
+            {
+              "name": "alt",
+              "productName": "diebels alt",
+              "alone": false,
+              "var": [
+                {
+                  "size": 300,
+                  "price": 2.9
+                },
+                {
+                  "size": 500,
+                  "price": 4.4
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "zwickl",
+          "productName": "zwick'l",
+          "var": [
+            {
+              "size": 300,
+              "price": 2.9
+            },
+            {
+              "size": 500,
+              "price": 4.5
+            }
+          ]
+        },
+        {
+          "name": "potsdamer",
+          "child": [
+            {
+              "name": "rex",
+              "child": [
+                {
+                  "name": "pils",
+                  "productName": "potsdamer rex pils",
+                  "var": [
+                    {
+                      "size": 300,
+                      "price": 2.8
+                    },
+                    {
+                      "size": 500,
+                      "price": 4.2
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "kölsch",
+          "default": "sion",
+          "child": [
+            {
+              "name": "sion",
+              "productName": "sion kölsch",
+              "var": [
+                {
+                  "size": 300,
+                  "price": 2.8
+                }
+              ]
+            },
+            {
+              "name": "meter",
+              "productName": "1 meter kölsch",
+              "var": [
+                {
+                  "size": 3300,
+                  "price": 27
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "gespritztes",
+          "child": [
+            {
+              "name": "fassbrause",
+              "productName": "gespritztes mit fassbrause",
+              "var": [
+                {
+                  "size": 300,
+                  "price": 2.8
+                },
+                {
+                  "size": 500,
+                  "price": 4.3
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "corona",
+          "child": [
+            {
+              "name": "beer",
+              "productName": "corona beer",
+              "var": [
+                {
+                  "size": 330,
+                  "price": 4.9
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "berliner",
+          "child": [
+            {
+              "name": "weisse",
+              "child": [
+                {
+                  "name": "rot",
+                  "productName": "berliner weisse rot",
+                  "var": [
+                    {
+                      "size": 330,
+                      "price": 4.2
+                    }
+                  ]
+                },
+                {
+                  "name": "grün",
+                  "productName": "berliner weisse grün",
+                  "var": [
+                    {
+                      "size": 330,
+                      "price": 4.2
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "wein",
+      "synonym": ["schoppenwein"],
+      "child": [
+        {
+          "name": "weißwein",
+          "default": "chardonnay",
+          "child": [
+            {
+              "name": "chardonnay",
+              "productName": "chardonnay",
+              "var": [
+                {
+                  "size": 200,
+                  "price": 4.7
+                },
+                {
+                  "size": 500,
+                  "price": 11.5
+                },
+                {
+                  "size": 1000,
+                  "price": 21.5
+                }
+              ]
+            },
+            {
+              "name": "veltiner",
+              "child": [
+                {
+                  "name": "grün",
+                  "productName": "grüner veltiner",
+                  "alone": false,
+                  "var": [
+                    {
+                      "size": 200,
+                      "price": 4.3
+                    },
+                    {
+                      "size": 500,
+                      "price": 9.9
+                    },
+                    {
+                      "size": 1000,
+                      "price": 19.5
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "rotwein",
+          "child": [
+            {
+              "name": "zweigelt",
+              "child": [
+                {
+                  "name": "blau",
+                  "productName": "blauer zweigelt",
+                  "var": [
+                    {
+                      "size": 200,
+                      "price": 4.7
+                    },
+                    {
+                      "size": 500,
+                      "price": 11.5
+                    },
+                    {
+                      "size": 1000,
+                      "price": 21.5
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "sekt",
+      "child": [
+        {
+          "name": "prosecco",
+          "child": [
+            {
+              "name": "frizzante",
+              "productName": "prosecco frizzante",
+              "var": [
+                {
+                  "size": 100,
+                  "price": 4.5
+                },
+                {
+                  "size": 750,
+                  "price": 32
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "champagne",
+      "child": [
+        {
+          "name": "saint",
+          "child": [
+            {
+              "name": "gall",
+              "productName": "de st. gall",
+              "var": [
+                {
+                  "size": 750,
+                  "price": 85
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "obstbrand",
+      "synonym": ["edelobstbrand"],
+      "child": [
+        {
+          "name": "waldhimbeer",
+          "child": [
+            {
+              "name": "geist",
+              "productName": "waldhimbeergeist",
+              "var": [
+                {
+                  "size": 20,
+                  "price": 4.8
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "marillenbrand",
+          "productName": "marillenbrand",
+          "var": [
+            {
+              "size": 20,
+              "price": 4.8
+            }
+          ]
+        },
+        {
+          "name": "holzfass",
+          "productName": "obstbrand aus dem holzfass",
+          "var": [
+            {
+              "size": 20,
+              "price": 4.8
+            }
+          ]
+        },
+        {
+          "name": "bierbrand",
+          "child": [
+            {
+              "name": "könig",
+              "child": [
+                {
+                  "name": "ludwig",
+                  "productName": "könig ludwig bierbrand",
+                  "var": [
+                    {
+                      "size": 20,
+                      "price": 3.8
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "korn",
+      "child": [
+        {
+          "name": "nordhäuser",
+          "productName": "nordhäuser korn",
+          "var": [
+            {
+              "size": 20,
+              "price": 2.8
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "malteser",
+      "child": [
+        {
+          "name": "aquavit",
+          "productName": "malteser aquavit",
+          "var": [
+            {
+              "size": 20,
+              "price": 2.8
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "wodka",
+      "child": [
+        {
+          "name": "moskovskaya",
+          "productName": "wodka moskovskaya",
+          "var": [
+            {
+              "size": 20,
+              "price": 2.8
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "johnnie",
+      "child": [
+        {
+          "name": "walker",
+          "child": [
+            {
+              "name": "label",
+              "alone": false,
+              "child": [
+                {
+                  "name": "red",
+                  "synonym": ["rot"],
+                  "productName": "johnnie walker - red label",
+                  "alone": false,
+                  "var": [
+                    {
+                      "size": 40,
+                      "price": 6.5
+                    }
+                  ]
+                },
+                {
+                  "name": "black",
+                  "synonym": ["schwarz"],
+                  "productName": "johnnie walker - black label",
+                  "alone": false,
+                  "var": [
+                    {
+                      "size": 40,
+                      "price": 6.5
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "gran",
+      "child": [
+        {
+          "name": "duque",
+          "child": [
+            {
+              "name": "alba",
+              "child": [
+                {
+                  "name": "brandy",
+                  "child": [
+                    {
+                      "name": "jerez",
+                      "productName": "gran duque d alba brandy de jerez",
+                      "var": [
+                        {
+                          "size": 20,
+                          "price": 3.8
+                        }
+                      ]
+                    }
+                  ]
+
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "kümmel",
+      "child": [
+        {
+          "name": "kutscher",
+          "productName": "kutscher kümmel",
+          "var": [
+            {
+              "size": 20,
+              "price": 2.9
+            }
+          ]
+        },
+        {
+          "name": "dautes",
+          "productName": "dautes kümmel - ohne zucker",
+          "var": [
+            {
+              "size": 20,
+              "price": 2.9
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "longdrink",
+      "child": [
+        {
+          "name": "jack",
+          "child": [
+            {
+              "name": "daniels",
+              "child": [
+                {
+                  "name": "cola",
+                  "productName": "jack daniels - cola",
+                  "var": [
+                    {
+                      "size": 40,
+                      "price": 7.9
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "kirsch",
+          "child": [
+            {
+              "name": "batida",
+              "productName": "batida kirsch",
+              "var": [
+                {
+                  "size": 40,
+                  "price": 7.9
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "likör 43",
+          "child": [
+            {
+              "name": "milch",
+              "productName": "likör 43 mit milch",
+              "var": [
+                {
+                  "size": 40,
+                  "price": 7.9
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "ginger ale",
+          "child": [
+            {
+              "name": "southern",
+              "child": [
+                {
+                  "name": "comfort",
+                  "productName": "southern comfort - ginger ale",
+                  "var": [
+                    {
+                      "size": 40,
+                      "price": 7.9
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "wasser",
+      "default": "tafel",
+      "child": [
+        {
+          "name": "tafel",
+          "productName": "tafelwasser",
+          "var": [
+            {
+              "size": 200,
+              "price": 1.9
+            },
+            {
+              "size": 400,
+              "price": 3.8
+            }
+          ]
+        },
+        {
+          "name": "vöslauer",
+          "child": [
+            {
+              "name": "medium",
+              "productName": "vöslauer 'prickelnd'",
+              "var": [
+                {
+                  "size": 250,
+                  "price": 2.6
+                },
+                {
+                  "size": 750,
+                  "price": 5.9,
+                  "default": true
+                }
+              ]
+            },
+            {
+              "name": "still",
+              "productName": "vöslauer 'ohne'",
+              "var": [
+                {
+                  "size": 250,
+                  "price": 2.6
+                },
+                {
+                  "size": 750,
+                  "price": 5.9
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "saft",
+      "child": [
+        {
+          "name": "orange",
+          "synonym": ["orangensaft", "o saft"],
+          "productName": "orangensaft",
+          "var": [
+            {
+              "size": 200,
+              "price": 2.9
+            },
+            {
+              "size": 400,
+              "price": 4.6
+            }
+          ]
+        },
+        {
+          "name": "apfel",
+          "synonym": ["apfelsaft"],
+          "productName": "apfelsaft",
+          "var": [
+            {
+              "size": 200,
+              "price": 2.9
+            },
+            {
+              "size": 400,
+              "price": 4.6
+            }
+          ]
+        },
+        {
+          "name": "kirsch",
+          "synonym": ["kirschsaft"],
+          "productName": "kirschsaft",
+          "var": [
+            {
+              "size": 200,
+              "price": 2.9
+            },
+            {
+              "size": 400,
+              "price": 4.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "kaffee",
+      "default": "creme",
+      "child": [
+        {
+          "name": "creme",
+          "productName": "kaffee creme",
+          "var": [
+            {
+              "size": 200,
+              "price": 2.5
+            }
+          ]
+        },
+        {
+          "name": "milchkaffee",
+          "productName": "milchkaffee",
+          "var": [
+            {
+              "size": 200,
+              "price": 3.5
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "schokolade",
+      "child": [
+        {
+          "name": "heiß",
+          "productName": "heiße schokolade",
+          "alone": false,
+          "var": [
+            {
+              "size": 200,
+              "price": 3.9
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "espresso",
+      "child": [
+        {
+          "productName": "einfacher espresso",
+          "name": "normal",
+          "alone": false,
+          "var": [
+            {
+              "size": 100,
+              "price": 1.9
+            }
+          ]
+        },
+        {
+          "name": "doppelt",
+          "productName": "doppelter espresso",
+          "alone": false,
+          "var": [
+            {
+              "size": 200,
+              "price": 3.3
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "defaultParents": []
+}

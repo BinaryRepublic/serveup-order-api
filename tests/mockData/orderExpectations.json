@@ -1,0 +1,31 @@
+[
+  {
+    "order": "Wir möchten Kölsch und Jever trinken, von dem Kölsch drei und zwei Jever.",
+    "expect": [
+      {
+        "name": "sion kölsch",
+        "nb": 3,
+        "size": 300
+      },
+      {
+        "name": "jever pilsener",
+        "nb": 2
+      }
+    ]
+  },
+  {
+    "order": "Wir möchten Aquavit und Moskovskaya trinken, von dem Moskovskaya drei und zwei Aquavit.",
+    "expect": [
+      {
+        "name": "wodka moskovskaya",
+        "nb": 3,
+        "size": 20
+      },
+      {
+        "name": "malteser aquavit",
+        "nb": 2,
+        "size": 20
+      }
+    ]
+  }
+]
