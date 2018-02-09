@@ -254,13 +254,6 @@ class Splitting {
                             normalizedIndex++;
                             spliceLength += kombo - 1;
                         }
-                        if (x < 0 && y === 0) {
-                            // splitItem had an addConj beforehand
-                            newSplitItem.splitType = 'conjAdd';
-                        } else {
-                            // splitItem was split via splitRules
-                            newSplitItem.splitType = 'splitRules';
-                        }
                         basicSplit[x].splice(0, spliceLength);
                         finalSplit.push(newSplitItem);
                     }

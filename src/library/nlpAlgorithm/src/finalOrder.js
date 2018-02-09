@@ -25,12 +25,10 @@ class finalOrder {
             for (let x = 1; x < worker.length; x++) {
                 let specifiedOrder = worker[x];
                 if (specifiedOrder.name === searchOrder.name) {
-                    if (specifiedOrder.splitType !== 'conjAdd') {
-                        specifying = true;
-                        for (let key in searchOrder) {
-                            if (!specifiedOrder[key]) {
-                                worker[x][key] = searchOrder[key];
-                            }
+                    specifying = true;
+                    for (let key in searchOrder) {
+                        if (!specifiedOrder[key]) {
+                            worker[x][key] = searchOrder[key];
                         }
                     }
                     break;
@@ -53,9 +51,7 @@ class finalOrder {
             let size = this.getTypeVal('size', x);
             let product = this.orderBlocks[x].product;
 
-            let newOrder = {
-                splitType: this.orderBlocks[x].splitType
-            };
+            let newOrder = {};
 
             if (product) {
                 // generate product name
@@ -107,11 +103,6 @@ class finalOrder {
         }
         // check if some orders were made to specify older objects
         order = this.specifyOrder(order);
-
-        // delete split types
-        order.forEach(item => {
-            delete item.splitType;
-        });
 
         return order;
     }

@@ -64,7 +64,8 @@ class nameOperations {
                         matching = false;
                     }
                 }
-                if (matching) {
+                // check if names are not the same > because then it is a specification in most cases
+                if (matching && nameKeywords[x].inputVal !== nameKeywords[y].inputVal) {
                     similarities[x].push(nameKeywords[y]);
                 }
             }
