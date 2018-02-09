@@ -21,37 +21,50 @@ class KeywordsFilter {
         this.searchConj = this.searchConj.bind(this);
     }
 
-    search (searchStr) {
+    search (searchStr, space = true) {
         let result = [];
         let lastIndex = 0;
 
         let srcStr = this.input;
-
         let pos = -1;
         let searchSuffix = [
             '', 'e', 'es', 'er', 'en', 'n'
         ];
+        let currentSpace = true;
         do {
-            for (let x = 0; x < searchSuffix.length; x++) {
-                let searchVal = searchStr + searchSuffix[x];
-                pos = srcStr.indexOf(' ' + searchVal + ' ', lastIndex);
-                if (pos !== -1) {
-                    result.push({
-                        pos: pos,
-                        val: searchVal
-                    });
-                    break;
+            do {
+                for (let x = 0; x < searchSuffix.length; x++) {
+                    let searchVal = searchStr + searchSuffix[x];
+                    if (currentSpace) {
+                        searchVal = ' ' + searchVal + ' ';
+                    }
+                    pos = srcStr.indexOf(searchVal, lastIndex);
+                    if (pos !== -1) {
+                        result.push({
+                            pos: pos,
+                            val: searchVal,
+                            space: currentSpace
+                        });
+                        // try not to search without spaces
+                        space = true;
+                        break;
+                    }
                 }
+                lastIndex = pos + 1;
+            } while (pos !== -1);
+            if (!space && currentSpace) {
+                currentSpace = false;
+            } else {
+                space = true;
             }
-            lastIndex = pos + 1;
-        } while (pos !== -1);
+        } while (space === false);
         return result;
     };
 
     // --- NAME
 
     searchForNameResult (searchStr, menuPos, defaultSynonymsName, result, alone = true) {
-        let searchRes = this.search(searchStr);
+        let searchRes = this.search(searchStr, false);
         if (searchRes.length) {
             for (let x = 0; x < searchRes.length; x++) {
                 let resultObj = {
@@ -73,8 +86,10 @@ class KeywordsFilter {
         return result;
     };
     searchName (drinks = false, index = [], result = [], defaultSynonymsResults = []) {
+        let parentRecursive = false;
         if (drinks === false) {
             drinks = this.menu.drinks;
+            parentRecursive = true;
         }
 
         if (!index.length) {
@@ -124,6 +139,49 @@ class KeywordsFilter {
         result = result.sort((a, b) => {
             return parseInt(a.inputPos) - parseInt(b.inputPos);
         });
+
+        if (parentRecursive) {
+            // before return to main
+            // filter nonSpace results > check if they are connectedWords
+            let nonSpace = result.filter(item => {
+                return !item.space;
+            });
+            console.log(nonSpace);
+            let searchNonSpaceConnection = (item) => {
+                let before = false;
+                let after = false;
+                for (let x = 0; x < 2; x++) {
+                    if (!x) {
+                        // search before
+                        nonSpace.forEach(search => {
+                            let searchEnd = search.inputPos + search.inputVal.length;
+                            if (searchEnd === item.inputPos) {
+                                before = true;
+                            }
+                        });
+                    } else {
+                        // search after
+                        nonSpace.forEach(search => {
+                            let searchStart = search.inputPos;
+                            if (searchStart === item.inputPos + item.inputVal.length) {
+                                after = true;
+                            }
+                        });
+                    }
+                }
+                if (before || after) {
+                    return true;
+                }
+            };
+            for (let x = 0; x < result.length; x++) {
+                if (!result[x].space) {
+                    if (!searchNonSpaceConnection(result[x])) {
+                        result.splice(x, 1);
+                        x--;
+                    }
+                }
+            }
+        }
 
         return result;
     };
