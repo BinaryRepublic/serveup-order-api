@@ -21,9 +21,9 @@ class OrderController extends APIController {
             let voiceDevice = this.realmVoiceDevice.formatRealmObj(this.realmVoiceDevice.objectWithClassName('VoiceDevice'));
             if (!voiceDevice.length) {
                 // get restaurant
-                let restaurant = this.realmMenu.objectWithClassName('Restaurant');
-                if (restaurant.length) {
-                    restaurant = this.realmMenu.formatRealmObj(restaurant)[0];
+                let restaurants = this.realmMenu.objectWithClassName('Restaurant');
+                if (restaurants.length) {
+                    let restaurant = this.realmMenu.formatRealmObj(restaurants)[0];
                     // create voiceDevice
                     voiceDevice = this.realmVoiceDevice.createVoiceDevice(restaurant.id, {
                         number: 1
