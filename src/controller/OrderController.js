@@ -54,8 +54,9 @@ class OrderController extends APIController {
             let order = nlpAlgorithm(menu, input, req.originalUrl);
 
             // insert order
-            this.realmOrder.createOrder(voiceDevice.id, order);
-
+            if (Array.isArray(order) && order.length) {
+                this.realmOrder.createOrder(voiceDevice.id, order);
+            }
             return order;
         }, res);
     }
