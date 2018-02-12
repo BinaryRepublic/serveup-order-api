@@ -70,6 +70,7 @@ class KeywordsFilter {
                 let resultObj = {
                     inputPos: searchRes[x].pos,
                     inputVal: searchRes[x].val,
+                    space: searchRes[x].space,
                     alone: alone,
                     name: searchStr
                 };
@@ -146,7 +147,6 @@ class KeywordsFilter {
             let nonSpace = result.filter(item => {
                 return !item.space;
             });
-            console.log(nonSpace);
             let searchNonSpaceConnection = (item) => {
                 let before = false;
                 let after = false;

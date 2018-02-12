@@ -40,5 +40,14 @@
   {
     "order": "Ich hätte gern das Alte.",
     "expect": []
+  },
+  {
+    "order": "Ich hätte gern einen Orangensaft.",
+    "expect": [
+      {
+        "name": "orangensaft",
+        "nb": 1
+      }
+    ]
   }
 ]
