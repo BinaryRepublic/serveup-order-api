@@ -16,7 +16,11 @@ class APIController {
     };
     handleResponse (res, jsonObject) {
         if (jsonObject) {
-            res.json(jsonObject);
+            if (jsonObject.error === undefined) {
+                res.json(jsonObject);
+            } else {
+                res.status(500).json(jsonObject);
+            }
         } else {
             res.sendStatus(500);
         }
