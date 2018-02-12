@@ -12,8 +12,38 @@ class OrderController extends APIController {
         this.realmOrder = new RealmOrderController();
         this.realmVoiceDevice = new RealmVoiceDeviceController();
         this.getOrder = this.getOrder.bind(this);
+        this.updateOrderStatus = this.updateOrderStatus.bind(this);
+        this.postOrder = this.postOrder.bind(this);
     };
     getOrder (req, res) {
+        const that = this;
+        let reqValid = this.requestValidator.validRequestData(req.query, ['restaurant-id']);
+        this.handleRequest(reqValid, () => {
+            let restaurantId = req.query['restaurant-id'];
+            let status = req.query.status;
+            let orders = that.realmOrder.getOrdersByRestaurantId(restaurantId);
+            orders = that.realmOrder.formatRealmObj(orders);
+            if (status) {
+                orders = orders.filter(item => {
+                    return (parseInt(item.status) === parseInt(status));
+                });
+            }
+            return orders;
+        }, res);
+    }
+    updateOrderStatus (req, res) {
+        const that = this;
+        let reqValid = this.requestValidator.validRequestData(req.body, ['id', 'status']);
+        this.handleRequest(reqValid, () => {
+            let orderId = req.body.id;
+            let status = req.body.status;
+            let order = that.realmOrder.getOrderById(orderId);
+            order = that.realmOrder.formatRealmObj(order);
+            order.status = status;
+            return that.realmOrder.formatRealmObj(that.realmOrder.updateOrder(orderId, order));
+        }, res);
+    }
+    postOrder (req, res) {
         let reqValid = this.requestValidator.validRequestData(req.body, ['order']);
         this.handleRequest(reqValid, () => {
             // TEST >>>>> no voice device
