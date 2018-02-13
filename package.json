@@ -1,6 +1,6 @@
 {
 	"name": "ro-order-api",
-	"version": "1.0.1",
+	"version": "1.0.0",
 	"description": "order API for voice assistans to order drinks",
 	"main": "index.js",
 	"scripts": {
