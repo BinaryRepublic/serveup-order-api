@@ -14,6 +14,7 @@ class OrderController extends APIController {
         this.getOrder = this.getOrder.bind(this);
         this.updateOrderStatus = this.updateOrderStatus.bind(this);
         this.postOrder = this.postOrder.bind(this);
+        this.getKeywords = this.getKeywords.bind(this);
     };
     getOrder (req, res) {
         const that = this;
@@ -88,6 +89,42 @@ class OrderController extends APIController {
                 this.realmOrder.createOrder(voiceDevice.id, order);
             }
             return order;
+        }, res);
+    }
+
+    getKeywords (req, res) {
+        let reqValid = this.requestValidator.validRequestData(req.body, []);
+        this.handleRequest(reqValid, () => {
+            // test: select first menu in DB
+            let menu = this.realmMenu.objectWithClassName('Menu');
+            menu = this.realmMenu.formatRealmObj(menu)[0];
+
+            let orderKeywords = [];
+            let checkOderKeywordsDuplicate = (name) => {
+                orderKeywords.forEach(item => {
+                    if (item === name) {
+                        return false;
+                    }
+                });
+                return true;
+            };
+            let getKeywordsByMenu = (obj) => {
+                obj.forEach(item => {
+                    if (checkOderKeywordsDuplicate(item.name)) {
+                        orderKeywords.push(item.name);
+                    }
+                    item.synonym.forEach(synonym => {
+                        if (checkOderKeywordsDuplicate(synonym)) {
+                            orderKeywords.push(synonym);
+                        }
+                    });
+                    if (item.child.length) {
+                        getKeywordsByMenu(item.child);
+                    }
+                });
+            };
+            getKeywordsByMenu(menu.drinks);
+            return orderKeywords;
         }, res);
     }
 }
