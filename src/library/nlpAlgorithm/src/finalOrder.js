@@ -69,8 +69,8 @@ class finalOrder {
                     newOrder.nb = 1;
                 }
                 // size
-                let variations = Helper.orderObjArray(menuObj.var, 'size');
                 if (size) {
+                    let variations = Helper.orderObjArray(menuObj.var, 'size');
                     newOrder.size = false;
                     if (size.val === 'big') {
                         newOrder.size = variations[variations.length - 1].size;
@@ -87,14 +87,14 @@ class finalOrder {
                     newOrder.size = menuObj.var[0].size;
                 } else {
                     // search for default
-                    menuObj.var = menuObj.var.filter((x) => {
+                    let defaultVar = menuObj.var.slice().filter((x) => {
                         return x.default;
                     }, menuObj.var);
-                    if (menuObj.var.length) {
+                    if (defaultVar.length) {
                         newOrder.size = menuObj.var[0].size;
                     } else {
                         // QUESTION no default size defined
-                        newOrder.size = variations[0].size;
+                        newOrder.size = menuObj.var[0].size;
                     }
                 }
                 order.push(newOrder);
