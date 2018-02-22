@@ -148,11 +148,11 @@
     },
     {
       "name": "still",
-      "synonym": ["ohne kohlensäure"]
+      "synonym": ["ohne kohlensäure", "pur"]
     },
     {
       "name": "medium",
-      "synonym": ["prickelnd", "sprudel", "mit kohlensäure"]
+      "synonym": ["prickelnd", "sprudel", "mit kohlensäure", "schorle"]
     }
   ]
 }
