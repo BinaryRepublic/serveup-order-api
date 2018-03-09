@@ -11,12 +11,22 @@ class OrderController extends APIController {
         this.realmMenu = new RealmMenuController();
         this.realmOrder = new RealmOrderController();
         this.realmVoiceDevice = new RealmVoiceDeviceController();
-        this.getOrder = this.getOrder.bind(this);
+        this.getOrderById = this.getOrderById.bind(this);
+        this.getOrderByRestaurantId = this.getOrderByRestaurantId.bind(this);
         this.updateOrderStatus = this.updateOrderStatus.bind(this);
         this.postOrder = this.postOrder.bind(this);
         this.getKeywords = this.getKeywords.bind(this);
     };
-    getOrder (req, res) {
+    getOrderById (req, res) {
+        const that = this;
+        let reqValid = this.requestValidator.validRequestData(req.query, ['id']);
+        this.handleRequest(reqValid, () => {
+            var order = that.realmOrder.getOrderById(req.query.id);
+            order = that.realmOrder.formatRealmObj(order);
+            return order;
+        }, res);
+    }
+    getOrderByRestaurantId (req, res) {
         const that = this;
         let reqValid = this.requestValidator.validRequestData(req.query, ['restaurant-id']);
         this.handleRequest(reqValid, () => {
