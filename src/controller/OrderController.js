@@ -28,6 +28,8 @@ class OrderController extends APIController {
     }
     getOrderByRestaurantId (req, res) {
         const that = this;
+        console.log('/order/restaurant');
+        console.log(req.query);
         let reqValid = this.requestValidator.validRequestData(req.query, ['restaurant-id']);
         this.handleRequest(reqValid, () => {
             let restaurantId = req.query['restaurant-id'];
