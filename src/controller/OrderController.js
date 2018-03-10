@@ -34,7 +34,7 @@ class OrderController extends APIController {
             let status = req.query.status;
             let orders = that.realmOrder.getOrdersByRestaurantId(restaurantId);
             orders = that.realmOrder.formatRealmObj(orders);
-            if (status) {
+            if (orders !== undefined && status) {
                 orders = orders.filter(item => {
                     return (parseInt(item.status) === parseInt(status));
                 });
