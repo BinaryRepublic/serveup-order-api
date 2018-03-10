@@ -7,8 +7,6 @@ Router.get('/order', orderController.getOrderById);
 Router.get('/order/restaurant', orderController.getOrderByRestaurantId);
 Router.put('/order/status', orderController.updateOrderStatus);
 Router.post('/order', orderController.postOrder);
-Router.post('/testorder', orderController.postOrder);
-Router.post('/apporder', orderController.postOrder);
 
 Router.get('/orderkeywords', orderController.getKeywords);
 

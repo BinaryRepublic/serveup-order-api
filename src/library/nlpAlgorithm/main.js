@@ -58,19 +58,5 @@ module.exports = function (menu, input, orderRoute) {
 
     let order = finalOrder.createOrder();
 
-    let response;
-    if (orderRoute === '/testorder') {
-        // API Route for internal WebApp (test.html)
-        response = keywordsObj;
-    } else if (orderRoute === '/apporder') {
-        // API Route for testing orders from voice assistants
-        response = order;
-    } else {
-        // API Route for final use (defined at SwaggerHub)
-        // not implemented:
-        // https://app.swaggerhub.com/apis/restaurant-order/orderAPI/1.0.0#/testorder/
-        response = order;
-    }
-
-    return response;
+    return order;
 };
