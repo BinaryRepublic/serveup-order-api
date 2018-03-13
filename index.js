@@ -17,4 +17,4 @@ app.use(bodyParser.urlencoded({ // to support URL-encoded bodies
 }));
 app.use('/', require('./src/routes'));
 
-app.listen(3000, () => console.log('Example app listening on port 3000!'));
+module.exports = app.listen(3000, () => console.log('Example app listening on port 3000!'));

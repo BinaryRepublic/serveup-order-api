@@ -1,88 +1,82 @@
 'use strict';
 
 const expect = require('chai').expect;
+const request = require('supertest');
 
-const Router = require('./helper/routingSimulator');
+const Helper = require('./helper/helper');
 
-// prepare realm
-const RealmOrderController = require('../ro-realm/controller/RealmOrderController');
-const realmOrderController = new RealmOrderController();
-const realm = realmOrderController.realm;
-
-// require controllers
-const OrderController = require('../src/controller/OrderController');
 const invalid = require('./mockData/orderController/invalid');
 
-describe('OrderControllerInvalid', () => {
-    const controller = new OrderController();
-    describe('getOrderById', () => {
-        it('missingId', (done) => {
-            realm.then(() => {
-                Router.simulate(controller.getOrderById, invalid.getOrderById.missingId).then(response => {
-                    expect(response.status).to.equal(400);
+describe('loading express', function () {
+    let server;
+    beforeEach(function () {
+        server = require('../index');
+    });
+    afterEach(function () {
+        server.close();
+    });
+    describe('ORDER-INVALID', () => {
+        it('GET /order missingId', (done) => {
+            request(server)
+                .get('/order')
+                .set('Accept', 'application/json')
+                .expect(400)
+                .end(function (err, response) {
+                    if (err) return done(err);
+
                     expect(response.body.error.type).to.equal('PARAM_MISSING');
                     done();
-                }).catch(err => {
-                    done(err);
                 });
-            });
         });
-        it('invalidId', (done) => {
-            realm.then(() => {
-                Router.simulate(controller.getOrderById, invalid.getOrderById.invalidId).then(response => {
-                    expect(response.status).to.equal(500);
+        it('GET /order invalidId', (done) => {
+            request(server)
+                .get('/order' + Helper.toQueryStr(invalid.getOrderById.invalidId.query))
+                .set('Accept', 'application/json')
+                .expect(500)
+                .end(function (err, response) {
+                    if (err) return done(err);
+
                     done();
-                }).catch(err => {
-                    done(err);
                 });
-            });
         });
-    });
-    describe('getOrderByRestaurantId', () => {
-        it('invalidId', (done) => {
-            realm.then(() => {
-                Router.simulate(controller.getOrderByRestaurantId, invalid.getOrderByRestaurantId.invalidId).then(response => {
-                    expect(response.status).to.equal(500);
-                    done();
-                }).catch(err => {
-                    done(err);
-                });
-            });
+        it('GET /order/restaurant invalidId', (done) => {
+            request(server)
+                .get('/order/restaurant' + Helper.toQueryStr(invalid.getOrderByRestaurantId.invalidId.query))
+                .set('Accept', 'application/json')
+                .expect(500, done);
         });
-    });
-    describe('updateOrderStatus', () => {
-        it('invalidId', (done) => {
-            realm.then(() => {
-                Router.simulate(controller.updateOrderStatus, invalid.updateOrderStatus.invalidId).then(response => {
-                    expect(response.status).to.equal(500);
-                    done();
-                }).catch(err => {
-                    done(err);
-                });
-            });
+        it('PUT /order invalidId', (done) => {
+            request(server)
+                .put('/order/status')
+                .send(invalid.updateOrderStatus.invalidId.body)
+                .set('Accept', 'application/json')
+                .expect(500, done);
         });
-        it('invalidStatus', (done) => {
-            realm.then(() => {
-                Router.simulate(controller.updateOrderStatus, invalid.updateOrderStatus.invalidStatus).then(response => {
-                    expect(response.status).to.equal(400);
+        it('PUT /order invalidStatus', (done) => {
+            request(server)
+                .put('/order/status')
+                .send(invalid.updateOrderStatus.invalidStatus.body)
+                .set('Accept', 'application/json')
+                .expect(400)
+                .end(function (err, response) {
+                    if (err) return done(err);
+
                     expect(response.body.error.type).to.equal('PARAM_VALUE');
                     done();
-                }).catch(err => {
-                    done(err);
                 });
-            });
         });
-    });
-    describe('postOrder', () => {
-        it('emptyOrder', (done) => {
-            realm.then(() => {
-                Router.simulate(controller.postOrder, invalid.postOrder.emptyOrder).then(response => {
-                    expect(response.status).to.equal(400);
+        it('POST /order emptyOrder', (done) => {
+            request(server)
+                .post('/order')
+                .send(invalid.postOrder.emptyOrder.body)
+                .set('Accept', 'application/json')
+                .expect(400)
+                .end(function (err, response) {
+                    if (err) return done(err);
+
+                    expect(response.body.error.type).to.equal('PARAM_VALUE');
                     done();
-                }).catch(err => {
-                    done(err);
                 });
-            });
         });
     });
 });

@@ -1,34 +1,26 @@
 {
     "getOrderById": {
-        "missingId": {
-            "query": {},
-            "body": {}
-        },
         "invalidId": {
             "query": {
                 "id": "invalid-id"
-            },
-            "body": {}
+            }
         }
     },
     "getOrderByRestaurantId": {
         "invalidId": {
             "query": {
                 "restaurant-id": "invalid-id"
-            },
-            "body": {}
+            }
         }
     },
     "updateOrderStatus": {
         "invalidId": {
-            "query": {},
             "body": {
                 "id": "invalid-id",
                 "status": 2
             }
         },
         "invalidStatus": {
-            "query": {},
             "body": {
                 "id": "2093b09f-6737-448d-b201-ee5595245d7d",
                 "status": 3
@@ -37,7 +29,6 @@
     },
     "postOrder": {
         "emptyOrder": {
-            "query": {},
             "body": {
                 "order": ""
             }
