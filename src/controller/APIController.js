@@ -6,12 +6,15 @@ class APIController {
     constructor () {
         this.requestValidator = new RequestValidator();
     };
-    handleRequest (requestValid, databaseCallback, res) {
-        if (requestValid) {
+    handleRequest (requestValidError, databaseCallback, res) {
+        if (requestValidError === false) {
             let result = databaseCallback();
             this.handleResponse(res, result);
         } else {
-            res.sendStatus(400);
+            let badRequest = {
+                error: requestValidError
+            };
+            res.status(400).json(badRequest);
         }
     };
     handleResponse (res, jsonObject) {
