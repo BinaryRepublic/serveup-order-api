@@ -1,0 +1,31 @@
+{
+    "getOrderById": {
+        "query": {
+            "id": "2093b09f-6737-448d-b201-ee5595245d7d"
+        },
+        "body": {}
+    },
+    "getOrderByRestaurantId": {
+        "query": {
+            "restaurant-id": "195d4792-e771-4d0b-8b45-df96a2965f2f"
+        },
+        "body": {}
+    },
+    "updateOrderStatus": {
+        "query": {},
+        "body": {
+            "id": "2093b09f-6737-448d-b201-ee5595245d7d",
+            "status": 2
+        }
+    },
+    "postOrder": {
+        "query": {},
+        "body": {
+            "order": "Ich hätte gern ein Bier!"
+        }
+    },
+    "getKeywords": {
+        "query": {},
+        "body": {}
+    }
+}
