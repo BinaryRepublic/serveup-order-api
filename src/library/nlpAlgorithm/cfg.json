@@ -26,17 +26,26 @@
         "synonym": ["sechs", "sechsmal"]
       },
       {
-        "val": 14,
-        "synonym": ["vierzehn", "vierzehn mal"]
+        "val": 7,
+        "synonym": ["sieben", "siebenmal"]
+      },
+      {
+        "val": 8,
+        "synonym": ["acht", "achtmal"]
+      },
+      {
+        "val": 9,
+        "synonym": ["neun", "neunmal"]
+      },
+      {
+        "val": 10,
+        "synonym": ["zehn", "zehnmal"]
       }
     ]
   },
   "size": {
     "small": [
-      "klein",
-      "wenig",
-      "schuss",
-      "bisschen"
+      "klein"
     ],
     "middle": [
       "mittel",
@@ -46,13 +55,76 @@
     "big": [
       "riesig",
       "groß",
-      "mächtig",
-      "viel"
+      "mächtig"
     ],
     "var": [
       {
+        "val": 20,
+        "synonym": [
+          "20 centiliter"
+        ]
+      },
+      {
+        "val": 40,
+        "synonym": [
+          "40 centiliter",
+          "doppelt"
+        ]
+      },
+      {
+        "val": 150,
+        "synonym": [
+          "0,15",
+          "015",
+          "150 milliliter"
+        ]
+      },
+      {
+        "val": 200,
+        "synonym": [
+          "0,20",
+          "02",
+          "200 milliliter"
+        ]
+      },
+      {
+        "val": 250,
+        "synonym": [
+          "0,25",
+          "025",
+          "250 milliliter"
+        ]
+      },
+      {
+        "val": 300,
+        "synonym": [
+          "0,3",
+          "03",
+          "300 milliliter"
+        ]
+      },
+      {
+        "val": 330,
+        "synonym": [
+          "0,33",
+          "033",
+          "330 milliliter"
+        ]
+      },
+      {
+        "val": 400,
+        "synonym": [
+          "0,4",
+          "04",
+          "400 milliliter"
+        ]
+      },
+      {
         "val": 500,
         "synonym": [
+          "05",
+          "0,5",
+          "500 milliliter",
           "halber liter",
           "halben liter",
           "halbe liter"
@@ -62,12 +134,26 @@
         "val": 750,
         "synonym": [
           "075",
-          "dreiviertel liter"
+          "0,75",
+          "750 milliliter",
+          "dreiviertel liter",
+          "flasche"
+        ]
+      },
+      {
+        "val": 1000,
+        "synonym": [
+          "1000 milliliter",
+          "1 liter",
+          "ein liter"
         ]
       },
       {
         "val": 1500,
         "synonym": [
+          "1500 milliliter",
+          "1,5 liter",
+          "15",
           "anderthalb liter"
         ]
       }
