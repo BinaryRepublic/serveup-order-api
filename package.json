@@ -5,8 +5,8 @@
 	"main": "index.js",
 	"scripts": {
 		"start": "node index.js",
-		"test": "cp tests/mockData/db/default.realm DataRealm/default.realm && mocha tests/**.test.js --exit",
-		"clean": "rm -rf DataRealm && mkdir DataRealm",
+		"test": "mkdir DataRealm && cp tests/mockData/db/default.realm DataRealm/default.realm && mocha tests/**.test.js --exit && npm run clean",
+		"clean": "rm -rf DataRealm",
 		"docker": "docker build -t ro/order-api .",
 		"sub": "git submodule update --remote"
 	},
