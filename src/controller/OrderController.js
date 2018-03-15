@@ -102,14 +102,13 @@ class OrderController extends APIController {
                 voiceDevice = voiceDevice[0];
                 // FINAL
                 menu = this.realmMenu.getMenuByRestaurantId(voiceDevice.restaurantId);
-                menu = this.realmMenu.formatRealmObj(menu, true);
                 if (menu) {
                     menu = menu[0];
                 } else {
                     return {error: 'no menu found'};
                 }
             }
-
+            menu = this.realmMenu.formatRealmObj(menu, true);
             let input = req.body.order;
             let nlpAlgorithm = require('../library/nlpAlgorithm/main');
             let orderItems = nlpAlgorithm(menu, input, req.originalUrl);

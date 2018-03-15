@@ -61,7 +61,8 @@ class finalOrder {
                     menuObj = menuObj.child[menuPos[y]];
                 }
                 newOrder.name = menuObj.productName;
-                newOrder.category = menuObj.category;
+                // set category
+                newOrder.category = menuObj.category ? menuObj.category : '';
                 // number
                 if (nb) {
                     newOrder.nb = nb.val;
