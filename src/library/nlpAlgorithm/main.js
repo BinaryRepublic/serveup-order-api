@@ -1,4 +1,4 @@
-module.exports = function (menu, input, orderRoute) {
+module.exports = function (menu, input) {
     // normalize
     input = input.replace(/[&\/\\#,+()$~%.'":*?!<>{}]/g, '');
     input = input.replace('-', ' ');
