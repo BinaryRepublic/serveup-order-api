@@ -229,6 +229,10 @@
       "synonym": ["kakao"]
     },
     {
+      "name": "bier",
+      "synonym": ["kühles blondes"]
+    },
+    {
       "name": "pilsener",
       "synonym": ["pils"]
     },
