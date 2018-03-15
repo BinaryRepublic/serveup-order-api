@@ -13,6 +13,7 @@
           "synonym": [
             "börse"
           ],
+          "category": "test",
           "var": [
             {
               "size": 300,
@@ -35,6 +36,7 @@
             {
               "name": "pilsener",
               "productName": "jever pilsener",
+              "category": "test",
               "var": [
                 {
                   "size": 300,
@@ -59,6 +61,7 @@
                 {
                   "name": "pilsener",
                   "productName": "paulaner premium pils",
+                  "category": "test",
                   "var": [
                     {
                       "size": 300,
@@ -82,6 +85,7 @@
                 {
                   "name": "weizen",
                   "productName": "paulaner kristallweizen",
+                  "category": "test",
                   "var": [
                     {
                       "size": 500,
@@ -100,6 +104,7 @@
             {
               "name": "pschorr",
               "productName": "hacker-pschorr",
+              "category": "test",
               "var": [
                 {
                   "size": 300,
@@ -119,6 +124,7 @@
             {
               "name": "alt",
               "productName": "diebels alt",
+              "category": "test",
               "alone": false,
               "var": [
                 {
@@ -136,6 +142,7 @@
         {
           "name": "zwickl",
           "productName": "zwick'l",
+          "category": "test",
           "var": [
             {
               "size": 300,
@@ -156,6 +163,7 @@
                 {
                   "name": "pils",
                   "productName": "potsdamer rex pils",
+                  "category": "test",
                   "var": [
                     {
                       "size": 300,
@@ -178,6 +186,7 @@
             {
               "name": "sion",
               "productName": "sion kölsch",
+              "category": "test",
               "var": [
                 {
                   "size": 300,
@@ -188,6 +197,7 @@
             {
               "name": "meter",
               "productName": "1 meter kölsch",
+              "category": "test",
               "var": [
                 {
                   "size": 3300,
@@ -203,6 +213,7 @@
             {
               "name": "fassbrause",
               "productName": "gespritztes mit fassbrause",
+              "category": "test",
               "var": [
                 {
                   "size": 300,
@@ -222,6 +233,7 @@
             {
               "name": "beer",
               "productName": "corona beer",
+              "category": "test",
               "var": [
                 {
                   "size": 330,
@@ -240,6 +252,7 @@
                 {
                   "name": "rot",
                   "productName": "berliner weisse rot",
+                  "category": "test",
                   "var": [
                     {
                       "size": 330,
@@ -250,6 +263,7 @@
                 {
                   "name": "grün",
                   "productName": "berliner weisse grün",
+                  "category": "test",
                   "var": [
                     {
                       "size": 330,
@@ -274,6 +288,7 @@
             {
               "name": "chardonnay",
               "productName": "chardonnay",
+              "category": "test",
               "var": [
                 {
                   "size": 200,
@@ -296,6 +311,7 @@
                   "name": "grün",
                   "productName": "grüner veltiner",
                   "alone": false,
+                  "category": "test",
                   "var": [
                     {
                       "size": 200,
@@ -324,6 +340,7 @@
                 {
                   "name": "blau",
                   "productName": "blauer zweigelt",
+                  "category": "test",
                   "var": [
                     {
                       "size": 200,
@@ -354,6 +371,7 @@
             {
               "name": "frizzante",
               "productName": "prosecco frizzante",
+              "category": "test",
               "var": [
                 {
                   "size": 100,
@@ -378,6 +396,7 @@
             {
               "name": "gall",
               "productName": "de st. gall",
+              "category": "test",
               "var": [
                 {
                   "size": 750,
@@ -399,6 +418,7 @@
             {
               "name": "geist",
               "productName": "waldhimbeergeist",
+              "category": "test",
               "var": [
                 {
                   "size": 20,
@@ -411,6 +431,7 @@
         {
           "name": "marillenbrand",
           "productName": "marillenbrand",
+          "category": "test",
           "var": [
             {
               "size": 20,
@@ -421,6 +442,7 @@
         {
           "name": "holzfass",
           "productName": "obstbrand aus dem holzfass",
+          "category": "test",
           "var": [
             {
               "size": 20,
@@ -437,6 +459,7 @@
                 {
                   "name": "ludwig",
                   "productName": "könig ludwig bierbrand",
+                  "category": "test",
                   "var": [
                     {
                       "size": 20,
@@ -456,6 +479,7 @@
         {
           "name": "nordhäuser",
           "productName": "nordhäuser korn",
+          "category": "test",
           "var": [
             {
               "size": 20,
@@ -471,6 +495,7 @@
         {
           "name": "aquavit",
           "productName": "malteser aquavit",
+          "category": "test",
           "var": [
             {
               "size": 20,
@@ -486,6 +511,7 @@
         {
           "name": "moskovskaya",
           "productName": "wodka moskovskaya",
+          "category": "test",
           "var": [
             {
               "size": 20,
@@ -510,6 +536,7 @@
                   "synonym": ["rot"],
                   "productName": "johnnie walker - red label",
                   "alone": false,
+                  "category": "test",
                   "var": [
                     {
                       "size": 40,
@@ -522,6 +549,7 @@
                   "synonym": ["schwarz"],
                   "productName": "johnnie walker - black label",
                   "alone": false,
+                  "category": "test",
                   "var": [
                     {
                       "size": 40,
@@ -550,6 +578,7 @@
                     {
                       "name": "jerez",
                       "productName": "gran duque d alba brandy de jerez",
+                      "category": "test",
                       "var": [
                         {
                           "size": 20,
@@ -572,6 +601,7 @@
         {
           "name": "kutscher",
           "productName": "kutscher kümmel",
+          "category": "test",
           "var": [
             {
               "size": 20,
@@ -582,6 +612,7 @@
         {
           "name": "dautes",
           "productName": "dautes kümmel - ohne zucker",
+          "category": "test",
           "var": [
             {
               "size": 20,
@@ -603,6 +634,7 @@
                 {
                   "name": "cola",
                   "productName": "jack daniels - cola",
+                  "category": "test",
                   "var": [
                     {
                       "size": 40,
@@ -620,6 +652,7 @@
             {
               "name": "batida",
               "productName": "batida kirsch",
+              "category": "test",
               "var": [
                 {
                   "size": 40,
@@ -653,6 +686,7 @@
                 {
                   "name": "comfort",
                   "productName": "southern comfort - ginger ale",
+                  "category": "test",
                   "var": [
                     {
                       "size": 40,
@@ -673,6 +707,7 @@
         {
           "name": "tafel",
           "productName": "tafelwasser",
+          "category": "test",
           "var": [
             {
               "size": 200,
@@ -690,6 +725,7 @@
             {
               "name": "medium",
               "productName": "vöslauer 'prickelnd'",
+              "category": "test",
               "var": [
                 {
                   "size": 250,
@@ -705,6 +741,7 @@
             {
               "name": "still",
               "productName": "vöslauer 'ohne'",
+              "category": "test",
               "var": [
                 {
                   "size": 250,
@@ -727,6 +764,7 @@
           "name": "orange",
           "synonym": ["orangensaft", "o saft"],
           "productName": "orangensaft",
+          "category": "test",
           "var": [
             {
               "size": 200,
@@ -742,6 +780,7 @@
           "name": "apfel",
           "synonym": ["apfelsaft"],
           "productName": "apfelsaft",
+          "category": "test",
           "var": [
             {
               "size": 200,
@@ -757,6 +796,7 @@
           "name": "kirsch",
           "synonym": ["kirschsaft"],
           "productName": "kirschsaft",
+          "category": "test",
           "var": [
             {
               "size": 200,
@@ -777,6 +817,7 @@
         {
           "name": "creme",
           "productName": "kaffee creme",
+          "category": "test",
           "var": [
             {
               "size": 200,
@@ -787,6 +828,7 @@
         {
           "name": "milchkaffee",
           "productName": "milchkaffee",
+          "category": "test",
           "var": [
             {
               "size": 200,
@@ -803,6 +845,7 @@
           "name": "heiß",
           "productName": "heiße schokolade",
           "alone": false,
+          "category": "test",
           "var": [
             {
               "size": 200,
@@ -819,6 +862,7 @@
           "productName": "einfacher espresso",
           "name": "normal",
           "alone": false,
+          "category": "test",
           "var": [
             {
               "size": 100,
@@ -830,6 +874,7 @@
           "name": "doppelt",
           "productName": "doppelter espresso",
           "alone": false,
+          "category": "test",
           "var": [
             {
               "size": 200,
