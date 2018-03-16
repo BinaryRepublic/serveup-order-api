@@ -18,6 +18,7 @@
 	"author": "Tobias Trinks",
 	"license": "ISC",
 	"dependencies": {
+		"axios": "^0.18.0",
 		"chai": "^4.1.2",
 		"eslint": "^4.16.0",
 		"express": "^4.16.2",
