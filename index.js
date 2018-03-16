@@ -17,8 +17,8 @@ app.use(bodyParser.urlencoded({ // to support URL-encoded bodies
 }));
 
 // authentication
-// app.use('/', require('./src/authRoutes'));
-// app.use(require('./src/middleware/authentication'));
+app.use('/', require('./src/authRoutes'));
+app.use(require('./src/middleware/authentication'));
 
 // application routes
 app.use('/', require('./src/routes'));
