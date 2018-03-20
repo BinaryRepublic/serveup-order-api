@@ -75,40 +75,26 @@ class OrderController extends APIController {
             name: 'order',
             type: 'string',
             nvalues: ['']
+        }, {
+            name: 'voiceDeviceId',
+            type: 'string',
+            nvalues: ['']
         }]);
         this.handleRequest(reqValid, () => {
-            // TEST >>>>> no voice device
             let menu;
-            let voiceDevice = this.realmVoiceDevice.formatRealmObj(this.realmVoiceDevice.objectWithClassName('VoiceDevice'));
-            if (!voiceDevice.length) {
-                // get restaurant
-                let restaurants = this.realmMenu.objectWithClassName('Restaurant');
-                if (restaurants.length) {
-                    let restaurant = this.realmMenu.formatRealmObj(restaurants)[0];
-                    // create voiceDevice
-                    voiceDevice = this.realmVoiceDevice.createVoiceDevice(restaurant.id, {
-                        number: 1
-                    });
-                    menu = this.realmMenu.getMenuByRestaurantId(restaurant.id);
-                    if (menu) {
-                        menu = menu[0];
-                    } else {
-                        return {error: 'no menu found'};
-                    }
-                } else {
-                    return {error: 'no restaurant found'};
-                }
-            } else {
-                voiceDevice = voiceDevice[0];
-                // FINAL
+            let voiceDevice = this.realmVoiceDevice.formatRealmObj(this.realmVoiceDevice.getVoiceDeviceById(req.body.voiceDeviceId))[0];
+            if (voiceDevice) {
                 menu = this.realmMenu.getMenuByRestaurantId(voiceDevice.restaurantId);
                 if (menu) {
-                    menu = menu[0];
+                    menu = this.realmMenu.formatRealmObj(menu, true)[0];
                 } else {
                     return {error: 'no menu found'};
                 }
+            } else {
+                // wrong voiceDeviceId
+                return;
             }
-            menu = this.realmMenu.formatRealmObj(menu, true);
+
             let input = req.body.order;
             let nlpAlgorithm = require('../library/nlpAlgorithm/main');
             let orderItems = nlpAlgorithm(menu, input, req.originalUrl);
