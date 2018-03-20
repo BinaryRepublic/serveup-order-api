@@ -82,7 +82,7 @@ class OrderController extends APIController {
         }]);
         this.handleRequest(reqValid, () => {
             let menu;
-            let voiceDevice = this.realmVoiceDevice.formatRealmObj(this.realmVoiceDevice.getVoiceDeviceById(req.body.voiceDeviceId))[0];
+            let voiceDevice = this.realmVoiceDevice.formatRealmObj(this.realmVoiceDevice.getVoiceDeviceById(req.body.voiceDeviceId));
             if (voiceDevice) {
                 menu = this.realmMenu.getMenuByRestaurantId(voiceDevice.restaurantId);
                 if (menu) {
