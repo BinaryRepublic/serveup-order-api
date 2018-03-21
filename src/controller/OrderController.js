@@ -113,11 +113,15 @@ class OrderController extends APIController {
     }
 
     getKeywords (req, res) {
-        let reqValid = this.requestValidator.validRequestData(req.body, []);
+        let reqValid = this.requestValidator.validRequestData(req.query, [{
+            name: 'restaurant-id',
+            type: 'string',
+            nvalues: ''
+        }]);
         this.handleRequest(reqValid, () => {
-            // test: select first menu in DB
-            let menu = this.realmMenu.objectWithClassName('Menu');
-            menu = this.realmMenu.formatRealmObj(menu)[0];
+            // get menu by restaurant id
+            let menu = this.realmMenu.getMenuByRestaurantId(req.query['restaurant-id'])[0];
+            menu = this.realmMenu.formatRealmObj(menu);
 
             let orderKeywords = [];
             let checkOderKeywordsDuplicate = (name) => {
