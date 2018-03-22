@@ -39,7 +39,7 @@ class AuthApi {
         return new Promise((resolve, reject) => {
             this.post('/grant', {
                 grant: grant,
-                accountId: accountId
+                clientId: accountId
             }).then(response => {
                 resolve(response);
             }).catch(err => {
