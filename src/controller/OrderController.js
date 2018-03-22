@@ -5,12 +5,17 @@ const RealmMenuController = require('../../ro-realm/controller/RealmMenuControll
 const RealmOrderController = require('../../ro-realm/controller/RealmOrderController');
 const RealmVoiceDeviceController = require('../../ro-realm/controller/RealmVoiceDeviceController');
 
+const Authorization = require('../middleware/controllerAuthorization');
+
 class OrderController extends APIController {
     constructor () {
         super();
         this.realmMenu = new RealmMenuController();
         this.realmOrder = new RealmOrderController();
         this.realmVoiceDevice = new RealmVoiceDeviceController();
+
+        this.authorization = new Authorization();
+
         this.getOrderById = this.getOrderById.bind(this);
         this.getOrderByRestaurantId = this.getOrderByRestaurantId.bind(this);
         this.updateOrderStatus = this.updateOrderStatus.bind(this);
@@ -24,9 +29,14 @@ class OrderController extends APIController {
             type: 'string'
         }]);
         this.handleRequest(reqValid, () => {
-            var order = that.realmOrder.getOrderById(req.query.id);
-            order = that.realmOrder.formatRealmObj(order);
-            return order;
+            let authorization = that.authorization.request(req.accountId, 'Order', req.query.id);
+            if (authorization && !authorization.error) {
+                let order = that.realmOrder.getOrderById(req.query.id);
+                order = that.realmOrder.formatRealmObj(order);
+                return order;
+            } else {
+                return authorization;
+            }
         }, res);
     }
     getOrderByRestaurantId (req, res) {
@@ -36,16 +46,21 @@ class OrderController extends APIController {
             type: 'string'
         }]);
         this.handleRequest(reqValid, () => {
-            let restaurantId = req.query['restaurant-id'];
-            let status = req.query.status;
-            let orders = that.realmOrder.getOrdersByRestaurantId(restaurantId);
-            orders = that.realmOrder.formatRealmObj(orders);
-            if (orders !== undefined && status) {
-                orders = orders.filter(item => {
-                    return (parseInt(item.status) === parseInt(status));
-                });
+            let authorization = that.authorization.request(req.accountId, 'Restaurant', req.query['restaurant-id']);
+            if (authorization && !authorization.error) {
+                let restaurantId = req.query['restaurant-id'];
+                let status = req.query.status;
+                let orders = that.realmOrder.getOrdersByRestaurantId(restaurantId);
+                orders = that.realmOrder.formatRealmObj(orders);
+                if (orders !== undefined && status) {
+                    orders = orders.filter(item => {
+                        return (parseInt(item.status) === parseInt(status));
+                    });
+                }
+                return orders;
+            } else {
+                return authorization;
             }
-            return orders;
         }, res);
     }
     updateOrderStatus (req, res) {
@@ -60,13 +75,18 @@ class OrderController extends APIController {
             optional: true
         }]);
         this.handleRequest(reqValid, () => {
-            let orderId = req.body.id;
-            let status = req.body.status;
-            let order = that.realmOrder.getOrderById(orderId);
-            if (order !== undefined) {
-                order = that.realmOrder.formatRealmObj(order);
-                order.status = status;
-                return that.realmOrder.formatRealmObj(that.realmOrder.updateOrder(orderId, order));
+            let authorization = that.authorization.request(req.accountId, 'Order', req.body.id);
+            if (authorization && !authorization.error) {
+                let orderId = req.body.id;
+                let status = req.body.status;
+                let order = that.realmOrder.getOrderById(orderId);
+                if (order !== undefined) {
+                    order = that.realmOrder.formatRealmObj(order);
+                    order.status = status;
+                    return that.realmOrder.formatRealmObj(that.realmOrder.updateOrder(orderId, order));
+                }
+            } else {
+                return authorization;
             }
         }, res);
     }
@@ -80,35 +100,41 @@ class OrderController extends APIController {
             type: 'string',
             nvalues: ['']
         }]);
+        const that = this;
         this.handleRequest(reqValid, () => {
-            let menu;
-            let voiceDevice = this.realmVoiceDevice.formatRealmObj(this.realmVoiceDevice.getVoiceDeviceById(req.body.voiceDeviceId));
-            if (voiceDevice) {
-                menu = this.realmMenu.getMenuByRestaurantId(voiceDevice.restaurantId);
-                if (menu) {
-                    menu = this.realmMenu.formatRealmObj(menu, true)[0];
+            let authorization = that.authorization.request(req.accountId, 'VoiceDevice', req.body.voiceDeviceId);
+            if (authorization && !authorization.error) {
+                let menu;
+                let voiceDevice = this.realmVoiceDevice.formatRealmObj(this.realmVoiceDevice.getVoiceDeviceById(req.body.voiceDeviceId));
+                if (voiceDevice) {
+                    menu = this.realmMenu.getMenuByRestaurantId(voiceDevice.restaurantId);
+                    if (menu) {
+                        menu = this.realmMenu.formatRealmObj(menu, true)[0];
+                    } else {
+                        return {error: 'no menu found'};
+                    }
                 } else {
-                    return {error: 'no menu found'};
+                    // wrong voiceDeviceId
+                    return;
                 }
+
+                let input = req.body.order;
+                let nlpAlgorithm = require('../library/nlpAlgorithm/main');
+                let orderItems = nlpAlgorithm(menu, input, req.originalUrl);
+                let order = {
+                    items: orderItems
+                };
+
+                if (!req.query.getonly) {
+                    // insert order
+                    if (Array.isArray(orderItems) && orderItems.length) {
+                        order = this.realmOrder.formatRealmObj(this.realmOrder.createOrder(voiceDevice.id, orderItems));
+                    }
+                }
+                return order;
             } else {
-                // wrong voiceDeviceId
-                return;
+                return authorization;
             }
-
-            let input = req.body.order;
-            let nlpAlgorithm = require('../library/nlpAlgorithm/main');
-            let orderItems = nlpAlgorithm(menu, input, req.originalUrl);
-            let order = {
-                items: orderItems
-            };
-
-            if (!req.query.getonly) {
-                // insert order
-                if (Array.isArray(orderItems) && orderItems.length) {
-                    order = this.realmOrder.formatRealmObj(this.realmOrder.createOrder(voiceDevice.id, orderItems));
-                }
-            }
-            return order;
         }, res);
     }
 
@@ -118,37 +144,43 @@ class OrderController extends APIController {
             type: 'string',
             nvalues: ''
         }]);
+        const that = this;
         this.handleRequest(reqValid, () => {
-            // get menu by restaurant id
-            let menu = this.realmMenu.getMenuByRestaurantId(req.query['restaurant-id'])[0];
-            menu = this.realmMenu.formatRealmObj(menu);
+            let authorization = that.authorization.request(req.accountId, 'Restaurant', req.query['restaurant-id']);
+            if (authorization && !authorization.error) {
+                // get menu by restaurant id
+                let menu = this.realmMenu.getMenuByRestaurantId(req.query['restaurant-id'])[0];
+                menu = this.realmMenu.formatRealmObj(menu);
 
-            let orderKeywords = [];
-            let checkOderKeywordsDuplicate = (name) => {
-                orderKeywords.forEach(item => {
-                    if (item === name) {
-                        return false;
-                    }
-                });
-                return true;
-            };
-            let getKeywordsByMenu = (obj) => {
-                obj.forEach(item => {
-                    if (checkOderKeywordsDuplicate(item.name)) {
-                        orderKeywords.push(item.name);
-                    }
-                    item.synonym.forEach(synonym => {
-                        if (checkOderKeywordsDuplicate(synonym)) {
-                            orderKeywords.push(synonym);
+                let orderKeywords = [];
+                let checkOderKeywordsDuplicate = (name) => {
+                    orderKeywords.forEach(item => {
+                        if (item === name) {
+                            return false;
                         }
                     });
-                    if (item.child.length) {
-                        getKeywordsByMenu(item.child);
-                    }
-                });
-            };
-            getKeywordsByMenu(menu.drinks);
-            return orderKeywords;
+                    return true;
+                };
+                let getKeywordsByMenu = (obj) => {
+                    obj.forEach(item => {
+                        if (checkOderKeywordsDuplicate(item.name)) {
+                            orderKeywords.push(item.name);
+                        }
+                        item.synonym.forEach(synonym => {
+                            if (checkOderKeywordsDuplicate(synonym)) {
+                                orderKeywords.push(synonym);
+                            }
+                        });
+                        if (item.child.length) {
+                            getKeywordsByMenu(item.child);
+                        }
+                    });
+                };
+                getKeywordsByMenu(menu.drinks);
+                return orderKeywords;
+            } else {
+                return authorization;
+            }
         }, res);
     }
 }

@@ -1,14 +1,14 @@
 'use strict';
 
-const RequestValidator = require('./RequestValidator');
+const RequestValidator = require('../middleware/controllerRequestValidator');
 
 class APIController {
     constructor () {
         this.requestValidator = new RequestValidator();
     };
-    handleRequest (requestValidError, databaseCallback, res) {
+    handleRequest (requestValidError, controllerMethod, res) {
         if (requestValidError === false) {
-            let result = databaseCallback();
+            let result = controllerMethod();
             this.handleResponse(res, result);
         } else {
             let badRequest = {
