@@ -33,7 +33,11 @@ class AuthController extends APIController {
             account = this.realmAccount.formatRealmObj(account)[0];
             if (account !== undefined) {
                 let newGrant = uuidv4();
-                this.authApi.grant(newGrant, account.id);
+                this.authApi.grant(newGrant, account.id).then(result => {
+                    // authentication successful
+                }).catch(err => {
+                    console.log(err);
+                });
                 return {
                     accountId: account.id,
                     grant: newGrant
