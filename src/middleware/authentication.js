@@ -12,7 +12,7 @@ module.exports = (req, res, next) => {
         });
     } else {
         authApi.access(accessToken).then(resp => {
-            req.accountId = resp.accountId;
+            req.accountId = resp.clientId;
             next();
         }).catch((err) => {
             // default error
