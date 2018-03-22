@@ -29,7 +29,7 @@ describe('loading express', function () {
         it('GET /order', (done) => {
             request(server)
                 .get('/order' + Helper.toQueryStr(valid.getOrderById.query))
-                .set('Accept', 'application/json')
+                .set({'Accept': 'application/json', 'Access-Token': 'unittest'})
                 .expect(200)
                 .end(function (err, response) {
                     if (err) return done(err);
@@ -49,7 +49,7 @@ describe('loading express', function () {
         it('GET /order/restaurant', (done) => {
             request(server)
                 .get('/order/restaurant' + Helper.toQueryStr(valid.getOrderByRestaurantId.query))
-                .set('Accept', 'application/json')
+                .set({'Accept': 'application/json', 'Access-Token': 'unittest'})
                 .expect(200)
                 .end(function (err, response) {
                     if (err) return done(err);
@@ -77,7 +77,7 @@ describe('loading express', function () {
             request(server)
                 .put('/order/status')
                 .send(valid.updateOrderStatus.body)
-                .set('Accept', 'application/json')
+                .set({'Accept': 'application/json', 'Access-Token': 'unittest'})
                 .expect(200)
                 .end(function (err, response) {
                     if (err) return done(err);
@@ -102,7 +102,7 @@ describe('loading express', function () {
             request(server)
                 .post('/order')
                 .send(valid.postOrder.body)
-                .set('Accept', 'application/json')
+                .set({'Accept': 'application/json', 'Access-Token': 'unittest'})
                 .expect(200)
                 .end(function (err, response) {
                     if (err) return done(err);
@@ -126,8 +126,8 @@ describe('loading express', function () {
         });
         it('GET /orderkeywords', (done) => {
             request(server)
-                .get('/orderkeywords')
-                .set('Accept', 'application/json')
+                .get('/orderkeywords' + Helper.toQueryStr(valid.getOrderKeywords.query))
+                .set({'Accept': 'application/json', 'Access-Token': 'unittest'})
                 .expect(200)
                 .end(function (err, response) {
                     if (err) return done(err);
