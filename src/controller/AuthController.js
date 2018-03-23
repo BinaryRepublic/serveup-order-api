@@ -11,8 +11,9 @@ class AuthController extends APIController {
     constructor () {
         super();
         this.realmAccount = new RealmAccountController();
-        this.login = this.login.bind(this);
         this.authApi = new AuthApiInterface();
+        this.login = this.login.bind(this);
+        this.logout = this.logout.bind(this);
     };
 
     login (req, res) {
@@ -51,6 +52,24 @@ class AuthController extends APIController {
                     grant: newGrant
                 };
             }
+        }, res);
+    }
+    logout (req, res) {
+        let reqValid = this.requestValidator.validRequestData(req.body, [{
+            name: 'accessToken',
+            type: 'string',
+            nvalues: ['']
+        }]);
+        this.handleRequest(reqValid, () => {
+            let accessToken = req.body.accessToken;
+            this.authApi.logout(accessToken).then(result => {
+                // logout successful
+            }).catch(err => {
+                console.log('/logout error: ' + err);
+            });
+            return {
+                accessToken: accessToken
+            };
         }, res);
     }
 }

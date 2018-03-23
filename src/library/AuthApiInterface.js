@@ -24,6 +24,17 @@ class AuthApi {
             });
         });
     }
+    delete (route, params) {
+        return new Promise((resolve, reject) => {
+            axios.delete('http://' + this.host + ':' + this.port + route, params).then(response => {
+                if (response.status === 200) {
+                    resolve(response.data);
+                }
+            }).catch(err => {
+                reject(err);
+            });
+        });
+    }
     access (accessToken) {
         return new Promise((resolve, reject) => {
             this.post('/access', {
@@ -42,6 +53,15 @@ class AuthApi {
                 clientId: accountId
             }).then(response => {
                 resolve(response);
+            }).catch(err => {
+                reject(err);
+            });
+        });
+    }
+    logout (accessToken) {
+        return new Promise((resolve, reject) => {
+            this.delete('/logout/' + accessToken, {}).then(result => {
+                resolve(result);
             }).catch(err => {
                 reject(err);
             });
