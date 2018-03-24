@@ -55,13 +55,13 @@ class AuthController extends APIController {
         }, res);
     }
     logout (req, res) {
-        let reqValid = this.requestValidator.validRequestData(req.body, [{
+        let reqValid = this.requestValidator.validRequestData(req.params, [{
             name: 'accessToken',
             type: 'string',
             nvalues: ['']
         }]);
         this.handleRequest(reqValid, () => {
-            let accessToken = req.body.accessToken;
+            let accessToken = req.params.accessToken;
             this.authApi.logout(accessToken).then(result => {
                 // logout successful
             }).catch(err => {
