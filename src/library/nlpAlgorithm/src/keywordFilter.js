@@ -28,7 +28,7 @@ class KeywordsFilter {
         let srcStr = this.input;
         let pos = -1;
         let searchSuffix = [
-            '', 'e', 'es', 'er', 'en', 'n'
+            'es', 'er', 'en', 'n', 'e', ''
         ];
         let currentSpace = true;
         do {
