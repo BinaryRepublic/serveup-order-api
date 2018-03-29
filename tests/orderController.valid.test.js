@@ -124,6 +124,13 @@ describe('loading express', function () {
                     expect(orderMenuItem.nb).to.be.a('number');
 
                     let orderService = order.service;
+                    expect(orderMenu.id).to.be.a('string');
+                    expect(orderMenu.timestamp).to.be.a('string');
+                    expect(orderMenu.voiceDeviceId).to.be.a('string');
+                    expect(orderMenu.restaurantId).to.be.a('string');
+                    expect(orderMenu.status).to.be.a('number');
+                    expect(orderMenu.status).to.be.equal(0);
+
                     expect(orderService.items).to.be.a('array');
                     let orderServiceItem = orderService.items[0];
                     expect(orderServiceItem.name).to.be.a('string');

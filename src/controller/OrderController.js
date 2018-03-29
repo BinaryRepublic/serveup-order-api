@@ -3,6 +3,7 @@
 const APIController = require('./APIController');
 const RealmMenuController = require('../../ro-realm/controller/RealmMenuController');
 const RealmOrderController = require('../../ro-realm/controller/RealmOrderController');
+const RealmServiceController = require('../../ro-realm/controller/RealmServiceController');
 const RealmVoiceDeviceController = require('../../ro-realm/controller/RealmVoiceDeviceController');
 
 const Authorization = require('../middleware/controllerAuthorization');
@@ -15,6 +16,7 @@ class OrderController extends APIController {
         super();
         this.realmMenu = new RealmMenuController();
         this.realmOrder = new RealmOrderController();
+        this.realmService = new RealmServiceController();
         this.realmVoiceDevice = new RealmVoiceDeviceController();
 
         this.authorization = new Authorization();
@@ -144,10 +146,10 @@ class OrderController extends APIController {
                 let serviceOrder = {
                     items: serviceOrderItems
                 };
-                if (false && !req.query.getonly) {
+                if (!req.query.getonly) {
                     if (Array.isArray(serviceOrderItems) && serviceOrderItems.length) {
                         // insert into database
-                        // ...
+                        serviceOrder = this.realmOrder.formatRealmObj(this.realmService.createService(voiceDevice.id, serviceOrderItems));
                     }
                 }
                 result.service = serviceOrder;
