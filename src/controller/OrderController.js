@@ -3,7 +3,6 @@
 const APIController = require('./APIController');
 const RealmMenuController = require('../../ro-realm/controller/RealmMenuController');
 const RealmOrderController = require('../../ro-realm/controller/RealmOrderController');
-const RealmServiceController = require('../../ro-realm/controller/RealmServiceController');
 const RealmVoiceDeviceController = require('../../ro-realm/controller/RealmVoiceDeviceController');
 
 const Authorization = require('../middleware/controllerAuthorization');
@@ -16,7 +15,6 @@ class OrderController extends APIController {
         super();
         this.realmMenu = new RealmMenuController();
         this.realmOrder = new RealmOrderController();
-        this.realmService = new RealmServiceController();
         this.realmVoiceDevice = new RealmVoiceDeviceController();
 
         this.authorization = new Authorization();
@@ -55,13 +53,29 @@ class OrderController extends APIController {
             if (authorization && !authorization.error) {
                 let restaurantId = req.query['restaurant-id'];
                 let status = req.query.status;
+
+                // load menuOrders
                 let orders = that.realmOrder.getOrdersByRestaurantId(restaurantId);
                 orders = that.realmOrder.formatRealmObj(orders);
+
+                // sort orders
+                if (orders && Array.isArray(orders)) {
+                    orders.sort((a, b) => {
+                        if (a.timestamp > b.timestamp) {
+                            return 1;
+                        } else {
+                            return -1;
+                        }
+                    });
+                }
+
+                // filter status
                 if (orders !== undefined && status) {
                     orders = orders.filter(item => {
                         return (parseInt(item.status) === parseInt(status));
                     });
                 }
+
                 return orders;
             } else {
                 return authorization;
@@ -122,39 +136,31 @@ class OrderController extends APIController {
                 }
 
                 let input = req.body.order;
-                let result = {};
+                let order = {
+                    drinks: [],
+                    services: []
+                };
 
                 // search for menu orders
+                let menuOrderItems = [];
                 if (menu) {
                     let menuAlgorithm = new MenuAlgorithm(menu);
-                    let menuOrderItems = menuAlgorithm.getOrder(input);
-                    let menuOrder = {
-                        items: menuOrderItems
-                    };
-
-                    if (!req.query.getonly) {
-                        // insert order
-                        if (Array.isArray(menuOrderItems) && menuOrderItems.length) {
-                            menuOrder = this.realmOrder.formatRealmObj(this.realmOrder.createOrder(voiceDevice.id, menuOrderItems));
-                        }
-                    }
-                    result.menu = menuOrder;
+                    menuOrderItems = menuAlgorithm.getOrder(input);
+                    order.drinks = menuOrderItems;
                 }
                 // search for service orders
                 let serviceAlgorithm = new ServiceAlgorithm();
                 let serviceOrderItems = serviceAlgorithm.getOrder(input);
-                let serviceOrder = {
-                    items: serviceOrderItems
-                };
+                order.services = serviceOrderItems;
+
                 if (!req.query.getonly) {
-                    if (Array.isArray(serviceOrderItems) && serviceOrderItems.length) {
+                    if (Array.isArray(menuOrderItems) && Array.isArray(serviceOrderItems) &&
+                        (menuOrderItems.length || serviceOrderItems.length)) {
                         // insert into database
-                        serviceOrder = this.realmOrder.formatRealmObj(this.realmService.createService(voiceDevice.id, serviceOrderItems));
+                        order = this.realmOrder.formatRealmObj(this.realmOrder.createOrder(voiceDevice.id, menuOrderItems, serviceOrderItems));
                     }
                 }
-                result.service = serviceOrder;
-
-                return result;
+                return order;
             } else {
                 return authorization;
             }
