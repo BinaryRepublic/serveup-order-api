@@ -124,8 +124,8 @@ describe('loading express', function () {
                     expect(orderMenuItem.nb).to.be.a('number');
 
                     let orderService = order.service;
-                    expect(orderService).to.be.a('array');
-                    let orderServiceItem = orderService[0];
+                    expect(orderService.items).to.be.a('array');
+                    let orderServiceItem = orderService.items[0];
                     expect(orderServiceItem.name).to.be.a('string');
                     done();
                 });

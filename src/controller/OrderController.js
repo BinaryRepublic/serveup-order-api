@@ -140,15 +140,18 @@ class OrderController extends APIController {
                 }
                 // search for service orders
                 let serviceAlgorithm = new ServiceAlgorithm();
-                let serviceOrder = serviceAlgorithm.getOrder(input);
-                if (serviceOrder.length) {
-                    // add to result
-                    if (false && !req.query.getonly) {
+                let serviceOrderItems = serviceAlgorithm.getOrder(input);
+                let serviceOrder = {
+                    items: serviceOrderItems
+                };
+                if (false && !req.query.getonly) {
+                    if (Array.isArray(serviceOrderItems) && serviceOrderItems.length) {
                         // insert into database
                         // ...
                     }
-                    result.service = serviceOrder;
                 }
+                result.service = serviceOrder;
+
                 return result;
             } else {
                 return authorization;
