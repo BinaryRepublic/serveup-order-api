@@ -7,6 +7,9 @@ const RealmVoiceDeviceController = require('../../ro-realm/controller/RealmVoice
 
 const Authorization = require('../middleware/controllerAuthorization');
 
+const MenuAlgorithm = require('../library/menuAlgorithm/main');
+const ServiceAlgorithm = require('../library/serviceAlgorithm/main');
+
 class OrderController extends APIController {
     constructor () {
         super();
@@ -110,8 +113,6 @@ class OrderController extends APIController {
                     menu = this.realmMenu.getMenuByRestaurantId(voiceDevice.restaurantId);
                     if (menu) {
                         menu = this.realmMenu.formatRealmObj(menu, true)[0];
-                    } else {
-                        return {error: 'no menu found'};
                     }
                 } else {
                     // wrong voiceDeviceId
@@ -119,19 +120,36 @@ class OrderController extends APIController {
                 }
 
                 let input = req.body.order;
-                let nlpAlgorithm = require('../library/nlpAlgorithm/main');
-                let orderItems = nlpAlgorithm(menu, input, req.originalUrl);
-                let order = {
-                    items: orderItems
-                };
+                let result = {};
 
-                if (!req.query.getonly) {
-                    // insert order
-                    if (Array.isArray(orderItems) && orderItems.length) {
-                        order = this.realmOrder.formatRealmObj(this.realmOrder.createOrder(voiceDevice.id, orderItems));
+                // search for menu orders
+                if (menu) {
+                    let menuAlgorithm = new MenuAlgorithm(menu);
+                    let menuOrderItems = menuAlgorithm.getOrder(input);
+                    let menuOrder = {
+                        items: menuOrderItems
+                    };
+
+                    if (!req.query.getonly) {
+                        // insert order
+                        if (Array.isArray(menuOrderItems) && menuOrderItems.length) {
+                            menuOrder = this.realmOrder.formatRealmObj(this.realmOrder.createOrder(voiceDevice.id, menuOrderItems));
+                        }
                     }
+                    result.menu = menuOrder;
                 }
-                return order;
+                // search for service orders
+                let serviceAlgorithm = new ServiceAlgorithm();
+                let serviceOrder = serviceAlgorithm.getOrder(input);
+                if (serviceOrder.length) {
+                    // add to result
+                    if (false && !req.query.getonly) {
+                        // insert into database
+                        // ...
+                    }
+                    result.service = serviceOrder;
+                }
+                return result;
             } else {
                 return authorization;
             }

@@ -17,7 +17,7 @@
     },
     "postOrder": {
         "body": {
-            "order": "Ich hätte gern ein Bier!",
+            "order": "Ich hätte gern ein Bier und danach die Rechnung!",
             "voiceDeviceId": "f9cb0c7d-9db6-4632-940a-b507cf8ff79e"
         }
     },

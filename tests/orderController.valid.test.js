@@ -108,19 +108,25 @@ describe('loading express', function () {
                     if (err) return done(err);
 
                     let order = response.body;
-                    expect(order.id).to.be.a('string');
-                    expect(order.timestamp).to.be.a('string');
-                    expect(order.voiceDeviceId).to.be.a('string');
-                    expect(order.restaurantId).to.be.a('string');
-                    expect(order.status).to.be.a('number');
-                    expect(order.status).to.be.equal(0);
+                    let orderMenu = order.menu;
+                    expect(orderMenu.id).to.be.a('string');
+                    expect(orderMenu.timestamp).to.be.a('string');
+                    expect(orderMenu.voiceDeviceId).to.be.a('string');
+                    expect(orderMenu.restaurantId).to.be.a('string');
+                    expect(orderMenu.status).to.be.a('number');
+                    expect(orderMenu.status).to.be.equal(0);
 
-                    expect(order.items).to.be.a('array');
-                    let orderItem = order.items[0];
-                    expect(orderItem.id).to.be.a('string');
-                    expect(orderItem.name).to.be.a('string');
-                    expect(orderItem.size).to.be.a('number');
-                    expect(orderItem.nb).to.be.a('number');
+                    expect(orderMenu.items).to.be.a('array');
+                    let orderMenuItem = orderMenu.items[0];
+                    expect(orderMenuItem.id).to.be.a('string');
+                    expect(orderMenuItem.name).to.be.a('string');
+                    expect(orderMenuItem.size).to.be.a('number');
+                    expect(orderMenuItem.nb).to.be.a('number');
+
+                    let orderService = order.service;
+                    expect(orderService).to.be.a('array');
+                    let orderServiceItem = orderService[0];
+                    expect(orderServiceItem.name).to.be.a('string');
                     done();
                 });
         });
