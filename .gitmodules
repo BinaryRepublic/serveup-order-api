@@ -1,3 +1,6 @@
 [submodule "ro-realm"]
 	path = ro-realm
 	url = https://github.com/restaurantorder/ro-realm.git
+[submodule "ro-express-helper"]
+	path = ro-express-helper
+	url = https://github.com/restaurantorder/ro-express-helper.git

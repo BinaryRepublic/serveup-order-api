@@ -1,11 +1,11 @@
 'use strict';
 
-const APIController = require('./APIController');
+const APIController = require('../../ro-express-helper/controller/APIController');
 const RealmMenuController = require('../../ro-realm/controller/RealmMenuController');
 const RealmOrderController = require('../../ro-realm/controller/RealmOrderController');
 const RealmVoiceDeviceController = require('../../ro-realm/controller/RealmVoiceDeviceController');
 
-const Authorization = require('../middleware/controllerAuthorization');
+const Authorization = require('../../ro-express-helper/middleware/Authorization');
 
 const MenuAlgorithm = require('../library/menuAlgorithm/main');
 const ServiceAlgorithm = require('../library/serviceAlgorithm/main');
@@ -40,7 +40,7 @@ class OrderController extends APIController {
             } else {
                 return authorization;
             }
-        }, res);
+        }, res, req);
     }
     getOrderByRestaurantId (req, res) {
         const that = this;
@@ -80,7 +80,7 @@ class OrderController extends APIController {
             } else {
                 return authorization;
             }
-        }, res);
+        }, res, req);
     }
     updateOrderStatus (req, res) {
         const that = this;
@@ -107,7 +107,7 @@ class OrderController extends APIController {
             } else {
                 return authorization;
             }
-        }, res);
+        }, res, req);
     }
     postOrder (req, res) {
         let reqValid = this.requestValidator.validRequestData(req.body, [{
@@ -164,7 +164,7 @@ class OrderController extends APIController {
             } else {
                 return authorization;
             }
-        }, res);
+        }, res, req);
     }
 
     getKeywords (req, res) {
@@ -210,7 +210,7 @@ class OrderController extends APIController {
             } else {
                 return authorization;
             }
-        }, res);
+        }, res, req);
     }
 }
 module.exports = OrderController;
