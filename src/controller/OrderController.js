@@ -36,7 +36,7 @@ class OrderController extends APIController {
             if (authorization && !authorization.error) {
                 let order = that.realmOrder.getOrderById(req.query.id);
                 order = that.realmOrder.formatRealmObj(order);
-                return order;
+                return order || {error: 'can not get order (orderId: ' + req.query.id + ')'};
             } else {
                 return authorization;
             }
@@ -76,7 +76,7 @@ class OrderController extends APIController {
                     });
                 }
 
-                return orders;
+                return orders || {error: 'can not get orders (restaurantId: ' + req.query['restaurant-id'] + ')'};
             } else {
                 return authorization;
             }
@@ -102,8 +102,12 @@ class OrderController extends APIController {
                 if (order !== undefined) {
                     order = that.realmOrder.formatRealmObj(order);
                     order.status = status;
-                    return that.realmOrder.formatRealmObj(that.realmOrder.updateOrder(orderId, order));
+                    let updatedItem = that.realmOrder.formatRealmObj(that.realmOrder.updateOrder(orderId, order));
+                    if (updatedItem) {
+                        return updatedItem;
+                    }
                 }
+                return {error: 'can not update orderStatus (orderId: ' + orderId + ')'};
             } else {
                 return authorization;
             }
@@ -129,10 +133,12 @@ class OrderController extends APIController {
                     menu = this.realmMenu.getMenuByRestaurantId(voiceDevice.restaurantId);
                     if (menu) {
                         menu = this.realmMenu.formatRealmObj(menu, true)[0];
+                    } else {
+                        return {error: 'can not find menu (restaurantId: ' + voiceDevice.restaurantId + ')'};
                     }
                 } else {
                     // wrong voiceDeviceId
-                    return;
+                    return {error: 'can not find voiceDevice (voiceDeviceId: ' + req.body.voiceDeviceId + ')'};
                 }
 
                 let input = req.body.order;
@@ -180,6 +186,9 @@ class OrderController extends APIController {
                 // get menu by restaurant id
                 let menu = this.realmMenu.getMenuByRestaurantId(req.query['restaurant-id'])[0];
                 menu = this.realmMenu.formatRealmObj(menu);
+                if (!menu) {
+                    return {error: 'can not find menu (restaurantId: ' + req.query['restaurant-id'] + ')'};
+                }
 
                 let orderKeywords = [];
                 let checkOderKeywordsDuplicate = (name) => {
