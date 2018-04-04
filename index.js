@@ -23,4 +23,4 @@ app.use(require('./ro-express-helper/middleware/authentication'));
 // application routes
 app.use('/', require('./src/routes'));
 
-module.exports = app.listen(3000, () => console.log('Example app listening on port 3000!'));
+module.exports = app.listen(3000);
