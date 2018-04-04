@@ -8,11 +8,8 @@
       "default": "jever",
       "child": [
         {
-          "name": "börsenbier",
+          "name": "börse",
           "productName": "börsenbier",
-          "synonym": [
-            "börse"
-          ],
           "category": "test",
           "var": [
             {
@@ -762,7 +759,7 @@
       "child": [
         {
           "name": "orange",
-          "synonym": ["orangensaft", "o saft"],
+          "synonym": ["o saft"],
           "productName": "orangensaft",
           "category": "test",
           "var": [

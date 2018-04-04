@@ -10,17 +10,17 @@ const metricsMiddleware = promBundle({
 const bodyParser = require('body-parser');
 
 app.use(metricsMiddleware);
-app.use('/', require('./src/middleware/accessControl').main);
+app.use('/', require('./ro-express-helper/middleware/access').main);
 app.use(bodyParser.json()); // to support JSON-encoded bodies
 app.use(bodyParser.urlencoded({ // to support URL-encoded bodies
     extended: true
 }));
 
 // authentication
-// app.use('/', require('./src/authRoutes'));
-// app.use(require('./src/middleware/authentication'));
+app.use('/', require('./ro-express-helper/authRoutes'));
+app.use(require('./ro-express-helper/middleware/authentication'));
 
 // application routes
 app.use('/', require('./src/routes'));
 
-module.exports = app.listen(3000, () => console.log('Example app listening on port 3000!'));
+module.exports = app.listen(3000);

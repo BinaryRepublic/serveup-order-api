@@ -19,7 +19,7 @@ describe('loading express', function () {
         it('GET /order missingId', (done) => {
             request(server)
                 .get('/order')
-                .set('Accept', 'application/json')
+                .set({'Accept': 'application/json', 'Access-Token': 'unittest'})
                 .expect(400)
                 .end(function (err, response) {
                     if (err) return done(err);
@@ -31,7 +31,7 @@ describe('loading express', function () {
         it('GET /order invalidId', (done) => {
             request(server)
                 .get('/order' + Helper.toQueryStr(invalid.getOrderById.invalidId.query))
-                .set('Accept', 'application/json')
+                .set({'Accept': 'application/json', 'Access-Token': 'unittest'})
                 .expect(500)
                 .end(function (err, response) {
                     if (err) return done(err);
@@ -42,21 +42,21 @@ describe('loading express', function () {
         it('GET /order/restaurant invalidId', (done) => {
             request(server)
                 .get('/order/restaurant' + Helper.toQueryStr(invalid.getOrderByRestaurantId.invalidId.query))
-                .set('Accept', 'application/json')
+                .set({'Accept': 'application/json', 'Access-Token': 'unittest'})
                 .expect(500, done);
         });
         it('PUT /order invalidId', (done) => {
             request(server)
                 .put('/order/status')
                 .send(invalid.updateOrderStatus.invalidId.body)
-                .set('Accept', 'application/json')
+                .set({'Accept': 'application/json', 'Access-Token': 'unittest'})
                 .expect(500, done);
         });
         it('PUT /order invalidStatus', (done) => {
             request(server)
                 .put('/order/status')
                 .send(invalid.updateOrderStatus.invalidStatus.body)
-                .set('Accept', 'application/json')
+                .set({'Accept': 'application/json', 'Access-Token': 'unittest'})
                 .expect(400)
                 .end(function (err, response) {
                     if (err) return done(err);
@@ -69,7 +69,7 @@ describe('loading express', function () {
             request(server)
                 .post('/order')
                 .send(invalid.postOrder.emptyOrder.body)
-                .set('Accept', 'application/json')
+                .set({'Accept': 'application/json', 'Access-Token': 'unittest'})
                 .expect(400)
                 .end(function (err, response) {
                     if (err) return done(err);

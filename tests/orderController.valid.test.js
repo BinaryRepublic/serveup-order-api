@@ -29,27 +29,35 @@ describe('loading express', function () {
         it('GET /order', (done) => {
             request(server)
                 .get('/order' + Helper.toQueryStr(valid.getOrderById.query))
-                .set('Accept', 'application/json')
+                .set({'Accept': 'application/json', 'Access-Token': 'unittest'})
                 .expect(200)
                 .end(function (err, response) {
                     if (err) return done(err);
 
                     let order = response.body;
                     expect(order.id).to.be.a('string');
-                    expect(order.items).to.be.a('array');
-                    expect(order.items[0].name).to.be.a('string');
-                    expect(order.items[0].size).to.be.a('number');
-                    expect(order.items[0].nb).to.be.a('number');
+                    expect(order.timestamp).to.be.a('string');
                     expect(order.voiceDeviceId).to.be.a('string');
                     expect(order.restaurantId).to.be.a('string');
                     expect(order.status).to.be.a('number');
+
+                    let orderDrink = order.drinks;
+                    expect(orderDrink).to.be.a('array');
+                    let orderDrinkItem = orderDrink[0];
+                    expect(orderDrinkItem.id).to.be.a('string');
+                    expect(orderDrinkItem.name).to.be.a('string');
+                    expect(orderDrinkItem.size).to.be.a('number');
+                    expect(orderDrinkItem.nb).to.be.a('number');
+
+                    let orderService = order.services;
+                    expect(orderService).to.be.a('array');
                     done();
                 });
         });
         it('GET /order/restaurant', (done) => {
             request(server)
                 .get('/order/restaurant' + Helper.toQueryStr(valid.getOrderByRestaurantId.query))
-                .set('Accept', 'application/json')
+                .set({'Accept': 'application/json', 'Access-Token': 'unittest'})
                 .expect(200)
                 .end(function (err, response) {
                     if (err) return done(err);
@@ -64,12 +72,16 @@ describe('loading express', function () {
                     expect(order.restaurantId).to.be.a('string');
                     expect(order.status).to.be.a('number');
 
-                    expect(order.items).to.be.a('array');
-                    let orderItem = order.items[0];
-                    expect(orderItem.id).to.be.a('string');
-                    expect(orderItem.name).to.be.a('string');
-                    expect(orderItem.size).to.be.a('number');
-                    expect(orderItem.nb).to.be.a('number');
+                    let orderDrink = order.drinks;
+                    expect(orderDrink).to.be.a('array');
+                    let orderDrinkItem = orderDrink[0];
+                    expect(orderDrinkItem.id).to.be.a('string');
+                    expect(orderDrinkItem.name).to.be.a('string');
+                    expect(orderDrinkItem.size).to.be.a('number');
+                    expect(orderDrinkItem.nb).to.be.a('number');
+
+                    let orderService = order.services;
+                    expect(orderService).to.be.a('array');
                     done();
                 });
         });
@@ -77,7 +89,7 @@ describe('loading express', function () {
             request(server)
                 .put('/order/status')
                 .send(valid.updateOrderStatus.body)
-                .set('Accept', 'application/json')
+                .set({'Accept': 'application/json', 'Access-Token': 'unittest'})
                 .expect(200)
                 .end(function (err, response) {
                     if (err) return done(err);
@@ -89,12 +101,16 @@ describe('loading express', function () {
                     expect(order.restaurantId).to.be.a('string');
                     expect(order.status).to.be.a('number');
 
-                    expect(order.items).to.be.a('array');
-                    let orderItem = order.items[0];
-                    expect(orderItem.id).to.be.a('string');
-                    expect(orderItem.name).to.be.a('string');
-                    expect(orderItem.size).to.be.a('number');
-                    expect(orderItem.nb).to.be.a('number');
+                    let orderDrink = order.drinks;
+                    expect(orderDrink).to.be.a('array');
+                    let orderDrinkItem = orderDrink[0];
+                    expect(orderDrinkItem.id).to.be.a('string');
+                    expect(orderDrinkItem.name).to.be.a('string');
+                    expect(orderDrinkItem.size).to.be.a('number');
+                    expect(orderDrinkItem.nb).to.be.a('number');
+
+                    let orderService = order.services;
+                    expect(orderService).to.be.a('array');
                     done();
                 });
         });
@@ -102,7 +118,7 @@ describe('loading express', function () {
             request(server)
                 .post('/order')
                 .send(valid.postOrder.body)
-                .set('Accept', 'application/json')
+                .set({'Accept': 'application/json', 'Access-Token': 'unittest'})
                 .expect(200)
                 .end(function (err, response) {
                     if (err) return done(err);
@@ -115,19 +131,25 @@ describe('loading express', function () {
                     expect(order.status).to.be.a('number');
                     expect(order.status).to.be.equal(0);
 
-                    expect(order.items).to.be.a('array');
-                    let orderItem = order.items[0];
-                    expect(orderItem.id).to.be.a('string');
-                    expect(orderItem.name).to.be.a('string');
-                    expect(orderItem.size).to.be.a('number');
-                    expect(orderItem.nb).to.be.a('number');
+                    let orderDrink = order.drinks;
+                    expect(orderDrink).to.be.a('array');
+                    let orderDrinkItem = orderDrink[0];
+                    expect(orderDrinkItem.id).to.be.a('string');
+                    expect(orderDrinkItem.name).to.be.a('string');
+                    expect(orderDrinkItem.size).to.be.a('number');
+                    expect(orderDrinkItem.nb).to.be.a('number');
+
+                    let orderService = order.services;
+                    expect(orderService).to.be.a('array');
+                    let orderServiceItem = orderService[0];
+                    expect(orderServiceItem.name).to.be.a('string');
                     done();
                 });
         });
         it('GET /orderkeywords', (done) => {
             request(server)
-                .get('/orderkeywords')
-                .set('Accept', 'application/json')
+                .get('/orderkeywords' + Helper.toQueryStr(valid.getOrderKeywords.query))
+                .set({'Accept': 'application/json', 'Access-Token': 'unittest'})
                 .expect(200)
                 .end(function (err, response) {
                     if (err) return done(err);

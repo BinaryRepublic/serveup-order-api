@@ -17,7 +17,13 @@
     },
     "postOrder": {
         "body": {
-            "order": "Ich hätte gern ein Bier!"
+            "order": "Ich hätte gern ein Bier und danach die Rechnung!",
+            "voiceDeviceId": "f9cb0c7d-9db6-4632-940a-b507cf8ff79e"
+        }
+    },
+    "getOrderKeywords": {
+        "query": {
+            "restaurant-id": "195d4792-e771-4d0b-8b45-df96a2965f2f"
         }
     }
 }
