@@ -93,7 +93,7 @@ class finalOrder {
                         return x.default;
                     }, menuObj.var);
                     if (defaultVar.length) {
-                        newOrder.size = menuObj.var[0].size;
+                        newOrder.size = defaultVar[0].size;
                     } else {
                         // QUESTION no default size defined
                         newOrder.size = menuObj.var[0].size;
